@@ -2,10 +2,14 @@ import numpy as np
 
 def CreateCube(EdgeSize):
 
-    return (np.array([[EdgeSize/2,EdgeSize/2,EdgeSize/2],[EdgeSize/2,EdgeSize/2,-EdgeSize/2],
-              [EdgeSize/2,-EdgeSize/2,-EdgeSize/2],[EdgeSize/2,-EdgeSize/2,EdgeSize/2],
-              [-EdgeSize/2,-EdgeSize/2,EdgeSize/2],[-EdgeSize/2,-EdgeSize/2,-EdgeSize/2],
-              [-EdgeSize/2,EdgeSize/2,-EdgeSize/2],[-EdgeSize/2,EdgeSize/2,EdgeSize/2]]))
+    return (np.array([[EdgeSize/2,EdgeSize/2,EdgeSize/2],
+                      [EdgeSize/2,EdgeSize/2,-EdgeSize/2],
+                      [EdgeSize/2,-EdgeSize/2,-EdgeSize/2],
+                      [EdgeSize/2,-EdgeSize/2,EdgeSize/2],
+                      [-EdgeSize/2,-EdgeSize/2,EdgeSize/2],
+                      [-EdgeSize/2,-EdgeSize/2,-EdgeSize/2],
+                      [-EdgeSize/2,EdgeSize/2,-EdgeSize/2],
+                      [-EdgeSize/2,EdgeSize/2,EdgeSize/2]]))
 
 def test():
     print('hello')
