@@ -12,3 +12,6 @@ obj.test()
 
 import PhotoViewer as pv
 pv.DrawCube(obj.CreateCube(10))
+
+
+import Camera
