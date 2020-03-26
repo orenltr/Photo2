@@ -5,7 +5,10 @@ class Camera(object):
 
     def __init__(self, focal_length, principal_point, radial_distortions, decentering_distortions, fiducial_marks, sensorSize):
         """
-
+            %
+            %
+            %
+            %
         Initialize the Camera object
 
         :param focal_length: focal length of the camera(mm)
