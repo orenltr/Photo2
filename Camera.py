@@ -3,8 +3,9 @@ import numpy as np
 
 class Camera(object):
 
-    def __init__(self, focal_length, principal_point, radial_distortions, decentering_distortions, fiducial_marks):
+    def __init__(self, focal_length, principal_point, radial_distortions, decentering_distortions, fiducial_marks, sensorSize):
         """
+
         Initialize the Camera object
 
         :param focal_length: focal length of the camera(mm)
@@ -27,6 +28,7 @@ class Camera(object):
         self.__decentering_distortions = decentering_distortions
         self.__fiducial_marks = fiducial_marks
         self.__CalibrationParam = None
+        self.__sensorSize = sensorSize
 
     @property
     def focalLength(self):
@@ -39,6 +41,18 @@ class Camera(object):
 
         """
         return self.__focal_length
+
+    @property
+    def sensorSize(self,val):
+        """
+        sensor size of the camera
+
+        :return: sensor size
+
+        :rtype: float
+
+        """
+        return self.__sensorSize
 
     @focalLength.setter
     def focalLength(self, val):
