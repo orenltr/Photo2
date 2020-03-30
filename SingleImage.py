@@ -474,7 +474,23 @@ class SingleImage(object):
         :rtype: np.array nx2
 
         """
-        pass  # delete after implementation
+        X0_1 = self.exteriorOrientationParameters[0]
+        Y0_1 = self.exteriorOrientationParameters[1]
+        Z0_1 = self.exteriorOrientationParameters[2]
+        O1 = np.array([X0_1, Y0_1, Z0_1]).T
+        R1 = self.rotationMatrix
+        x1 = np.zeros((len(groundPoints), 1))
+        y1 = np.zeros((len(groundPoints), 1))
+        f = self.camera.focalLength
+
+        for i in range(len(groundPoints)):
+            lamda1 = -f / (np.dot(R1.T[2], (groundPoints[i] - O1).T))  # scale first image
+            x1[i] = lamda1 * np.dot(R1.T[0], (groundPoints[i] - O1).T)
+            y1[i] = lamda1 * np.dot(R1.T[1], (groundPoints[i] - O1).T)
+            camera_points1 = np.vstack([x1.T, y1.T]).T
+            # img_points1 = self.CameraToImage(camera_points1)
+            img_points1 = camera_points1
+        return img_points1
 
     def ImageToRay(self, imagePoints):
         """

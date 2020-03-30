@@ -53,6 +53,33 @@ def drawImageFrame(imageWidth, imageHeight, R, x0, f, scale,ax):
     ax.scatter(x, y, z, c='r', s=50)
     ax.plot(x, y, z, color='r')
 
+def drawImageFrame2D(imageWidth, imageHeight):
+    """
+    Draw image frame in the 3d coordinate system
+
+    :param imageWidth: width of the image [m]
+    :param imageHeight: height of the image [m]
+    :param R: rotation matrix
+    :param x0: perspective center 3d coordinates
+    :param f: focal length [m]
+    :param scale: scale
+
+    :type imageWidth: float
+    :type imageHeight: float
+    :type R: np.array 3x3
+    :type x0: np.array 3x1
+    :type f: float
+    :type scale: float
+
+    :return: None
+    """
+
+    tl, tr, bl, br = calcFrameEdgesIn2d(imageWidth, imageHeight)
+    x = [tl[0, 0], tr[0, 0], br[0, 0], bl[0, 0], tl[0,0]]
+    y = [tl[1, 0], tr[1, 0], br[1, 0], bl[1, 0], tl[1,0]]
+
+    plt.scatter(x, y, c='r', s=50)
+    plt.plot(x, y, color='r')
 
 
 
@@ -89,6 +116,26 @@ def calcFrameEdgesIn3d(R, x0, f, scale, imageWidth, imageHeight):
     br = x0 + scale * R.dot(br)
     return tl, tr, bl, br
 
+def calcFrameEdgesIn2d(imageWidth, imageHeight):
+    """
+    Find the image corners in 3d system, using a simple version of the co-linear role
+
+    :param imageWidth: image frame width [m]
+    :param imageHeight: image frame height[m]
+
+    :type imageWidth: float
+    :type imageHeight: float
+
+    :return: tl, tr, bl, br
+    """
+
+    # this section defines each point
+    tl = np.array([[-imageWidth / 2], [imageHeight / 2]])  # top left point
+    tr = np.array([[imageWidth / 2], [imageHeight / 2]])  # top right point
+    bl = np.array([[-imageWidth / 2], [-imageHeight / 2]])  # bot left point
+    br = np.array([[imageWidth / 2], [-imageHeight / 2]])  # bot right point
+
+    return tl, tr, bl, br
 
 def drawOrientation(R, x0, scale, ax):
     """

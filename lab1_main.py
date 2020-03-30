@@ -42,9 +42,15 @@ camera1 = Camera(focal_length, np.array([0, 0]), None, None, None, sensor_size)
 
 # define image
 img1 = SingleImage(camera1)
-img1.exteriorOrientationParameters = np.array([[0, 0, 20, omega, phi, kappa]])
+img1.exteriorOrientationParameters = np.array([[0, 0, 100, omega, phi, kappa]])
 
 # draw image frame in world system
 img1.drawSingleImage(cube,ax)
 
+imagePoints = img1.GroundToImage(cube)
+plt.figure()
+# fig2=plt.figure()
+# ax2 = fig.add_subplot(122)
+pv.drawImageFrame2D(img1.camera.sensorSize,img1.camera.sensorSize)
+plt.scatter(imagePoints[:,0],imagePoints[:,1])
 plt.show()
