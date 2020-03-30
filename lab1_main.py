@@ -28,30 +28,23 @@ from SingleImage import SingleImage
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
+# create synthetic data
 cube = obj.CreateCube(6)
 pv.DrawCube(cube,ax)
 
-# plt.show()
-
+# define camera
 focal_length = 35
 sensor_size = 25
+omega = 0
+phi = 0
+kappa = 0
 camera1 = Camera(focal_length, np.array([0, 0]), None, None, None, sensor_size)
+
+# define image
 img1 = SingleImage(camera1)
-img1.exteriorOrientationParameters = np.array([[0, 0, 20, 0, 0, 0]])
-
-# draw image and cube
-x0 = np.array([[0], [0], [10]])
-# pv.drawOrientation(np.identity(3), x0, 2, ax)
-
-# image_border = img1.imageBorders(0)
-# # draw image border in world system
-# x = image_border[:, 0]
-# y = image_border[:, 1]
-# z = np.zeros(len(x))
+img1.exteriorOrientationParameters = np.array([[0, 0, 20, omega, phi, kappa]])
 
 # draw image frame in world system
 img1.drawSingleImage(cube,ax)
-# pv.drawImageFrame(camera1.sensorSize/10, camera1.sensorSize/10, np.identity(3), x0, camera1.focalLength/1000, 1, ax)
 
 plt.show()
-# >>>>>>> 38cbc8d... some changes 2
