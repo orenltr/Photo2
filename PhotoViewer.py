@@ -3,6 +3,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 from MatrixMethods import Compute3DRotationMatrix
 import ObjectsSynthetic as obj
+import ImagePair
 
 
 def drawRays(listOfPoints, x0,ax):
@@ -119,14 +120,14 @@ def drawOrientation(R, x0, scale, ax):
     xs, ys, zs = [x0[0, 0], zAxis[0, 0]], [x0[1, 0], zAxis[1, 0]], [x0[2, 0], zAxis[2, 0]]
     ax.plot(xs, ys, zs, c='b')
 
-def DrawCube(Cube):
+def DrawCube(Cube,ax):
     """
 
     :param Cube: ndarray nX3 [x,y,z]
     :return: void
     """
-    fig = plt.figure()
-    fig.gca(projection='3d')
+    # fig = plt.figure()
+    # fig.gca(projection='3d')
     x = Cube[:, 0]
     y = Cube[:, 1]
     z = Cube[:, 2]
@@ -142,7 +143,8 @@ def DrawCube(Cube):
     connectpoints(x,y,z,3,6)
     connectpoints(x,y,z,1,8)
     connectpoints(x,y,z,2,7)
-    plt.show()
+    # ImagePair.set_axes_equal(ax)
+    # plt.show()
 
 def connectpoints(x, y, z, p1, p2):
     """
@@ -160,29 +162,32 @@ def connectpoints(x, y, z, p1, p2):
     z1, z2 = z[p1-1], z[p2-1]
     plt.plot([x1, x2], [y1, y2],[z1, z2], 'k-')
 
-if __name__ == '__main__':
-    fig = plt.figure()
-
-    ax = fig.add_subplot(111, projection='3d')
-    DrawCube(obj.CreateCube(10))
+# def cubeProjection(cube, ):
 
 
-
-    #chek if the DrawRays function works
-    grdPnts = np.array([[201.062, 741.351, 241.987]])
-    drawRays(grdPnts, np.array([[50], [50], [50]]),ax)
-
-
-    # check if drawimageframe function works
-    f = 0.153
-    R = Compute3DRotationMatrix(np.pi/3, 0, 0)
-    scale = 50
-    drawImageFrame(0.5, 0.5, R, np.array([[50], [50], [50]]), f, scale,ax)
-
-
-    # check if drawOrientation function works
-    R = Compute3DRotationMatrix(np.pi/3, 0, 0)
-    x0 = np.array([[50], [50], [50]])
-    drawOrientation(R, x0, scale,ax)
-
-    plt.show()
+# if __name__ == '__main__':
+#     fig = plt.figure()
+#
+#     ax = fig.add_subplot(111, projection='3d')
+#     DrawCube(obj.CreateCube(10))
+#
+#
+#
+#     #chek if the DrawRays function works
+#     grdPnts = np.array([[201.062, 741.351, 241.987]])
+#     drawRays(grdPnts, np.array([[50], [50], [50]]),ax)
+#
+#
+#     # check if drawimageframe function works
+#     f = 0.153
+#     R = Compute3DRotationMatrix(np.pi/3, 0, 0)
+#     scale = 50
+#     drawImageFrame(0.5, 0.5, R, np.array([[50], [50], [50]]), f, scale,ax)
+#
+#
+#     # check if drawOrientation function works
+#     R = Compute3DRotationMatrix(np.pi/3, 0, 0)
+#     x0 = np.array([[50], [50], [50]])
+#     drawOrientation(R, x0, scale,ax)
+#
+#     plt.show()

@@ -2,7 +2,7 @@ import numpy as np
 import math
 from Camera import Camera
 from MatrixMethods import Compute3DRotationMatrix, Compute3DRotationDerivativeMatrix
-
+import PhotoViewer as pv
 
 class SingleImage(object):
 
@@ -20,7 +20,8 @@ class SingleImage(object):
         self.__camera = camera
         self.__innerOrientationParameters = None
         self.__isSolved = False
-        self.__exteriorOrientationParameters = np.array([0, 0, 0, 0, 0, 0], 'f')
+        self.__exteriorOrientationParameters = np.array([[0, 0, 0, 0, 0, 0]]).T
+        # self.__exteriorOrientationParameters = np.array([0, 0, 0, 0, 0, 0], 'f')
         self.__rotationMatrix = None
 
     @property
@@ -80,7 +81,7 @@ class SingleImage(object):
             self.exteriorOrintationParameters = parametersArray
 
         """
-        self.__exteriorOrientationParameters = parametersArray
+        self.__exteriorOrientationParameters = parametersArray.T
 
     @property
     def rotationMatrix(self):
@@ -108,6 +109,17 @@ class SingleImage(object):
         :rtype: boolean
         """
         return self.__isSolved
+
+    @property
+    def PerspectiveCenter(self):
+        """
+        return the perspective center of the first image
+
+        :return: perspective center
+
+        :rtype: np.array (3, )
+        """
+        return self.exteriorOrientationParameters[0:3]
 
     def ComputeInnerOrientation(self, imagePoints):
         r"""
@@ -730,6 +742,30 @@ class SingleImage(object):
         a[1::2] = dd[1]
 
         return a
+
+    def drawSingleImage(self, modelPoints,ax):
+        """
+        draws the rays to the modelpoints from the perspective center of the two images
+
+        :param modelPoints: points in the model system [ model units]
+        :param ax: axes of the plot
+        :type modelPoints: np.array nx3
+        :type ax: plot axes
+
+        :return: none
+
+        """
+        pixel_size = 0.0000024 # [m]
+
+        # images coordinate systems
+        pv.drawOrientation(self.rotationMatrix, self.PerspectiveCenter, 1,ax)
+
+        # images frames
+        pv.drawImageFrame(self.camera.sensorSize/1000, self.camera.sensorSize/1000,
+        self.rotationMatrix, self.PerspectiveCenter,self.camera.focalLength/1000,1,ax)
+
+        # draw rays from perspective centers to model points
+        pv.drawRays(modelPoints,self.PerspectiveCenter,ax)
 
 
 if __name__ == '__main__':
