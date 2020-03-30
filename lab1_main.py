@@ -49,8 +49,6 @@ img1.drawSingleImage(cube,ax)
 
 imagePoints = img1.GroundToImage(cube)
 plt.figure()
-# fig2=plt.figure()
-# ax2 = fig.add_subplot(122)
 pv.drawImageFrame2D(img1.camera.sensorSize,img1.camera.sensorSize)
 plt.scatter(imagePoints[:,0],imagePoints[:,1])
 plt.show()
