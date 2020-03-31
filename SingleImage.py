@@ -759,7 +759,7 @@ class SingleImage(object):
 
         return a
 
-    def drawSingleImage(self, modelPoints,ax):
+    def drawSingleImage(self, modelPoints,scale,ax):
         """
         draws the rays to the modelpoints from the perspective center of the two images
 
@@ -777,7 +777,7 @@ class SingleImage(object):
         pv.drawOrientation(self.rotationMatrix, self.PerspectiveCenter, 1,ax)
 
         # images frames
-        pv.drawImageFrame(self.camera.sensorSize/1000, self.camera.sensorSize/1000,
+        pv.drawImageFrame(self.camera.sensorSize/1000*scale, self.camera.sensorSize/1000*scale,
         self.rotationMatrix, self.PerspectiveCenter,self.camera.focalLength/1000,1,ax)
 
         # draw rays from perspective centers to model points

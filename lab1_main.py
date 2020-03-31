@@ -14,7 +14,6 @@ import PhotoViewer as pv
 # pv.DrawCube(obj.CreateCube(10),ax)
 
 
-# <<<<<<< HEAD
 import Camera
 # =======
 from Camera import Camera
@@ -35,20 +34,65 @@ pv.DrawCube(cube,ax)
 # define camera
 focal_length = 35
 sensor_size = 25
+camera1 = Camera(focal_length, np.array([0, 0]), None, None, None, sensor_size)
+
+
+# define image
 omega = 0
 phi = 0
 kappa = 0
-camera1 = Camera(focal_length, np.array([0, 0]), None, None, None, sensor_size)
+Z = 50
 
-# define image
+
 img1 = SingleImage(camera1)
-img1.exteriorOrientationParameters = np.array([[0, 0, 100, omega, phi, kappa]])
+img1.exteriorOrientationParameters = np.array([[0, 0, Z, omega, phi, kappa]])
+
+# scale of image frame in the plot
+scale = 100
 
 # draw image frame in world system
-img1.drawSingleImage(cube,ax)
+img1.drawSingleImage(cube,scale,ax)
 
-imagePoints = img1.GroundToImage(cube)
+image1Points = img1.GroundToImage(cube)
+# image1Points = np.hstack((image1Points,np.ones((image1Points.shape[0],1))*Z))
 plt.figure()
 pv.drawImageFrame2D(img1.camera.sensorSize,img1.camera.sensorSize)
-plt.scatter(imagePoints[:,0],imagePoints[:,1])
+pv.DrawCube2D(image1Points,plt.gca())
+plt.scatter(image1Points[:,0],image1Points[:,1])
+# plt.show()
+
+
+# חלק ג #
+
+# second camera
+camera2 = Camera(focal_length, np.array([0, 0]), None, None, None, sensor_size)
+
+# second image
+img2 = SingleImage(camera2)
+img2.exteriorOrientationParameters = np.array([[10, 0, Z, omega, phi, kappa]])
+
+# draw image frame in world system
+img2.drawSingleImage(cube,scale,ax)
+
+image2Points = img2.GroundToImage(cube)
+plt.figure()
+plt.subplot(121)
+pv.drawImageFrame2D(img2.camera.sensorSize,img2.camera.sensorSize)
+plt.scatter(image2Points[:,0],image2Points[:,1])
+# image2Points = np.hstack((image2Points,np.ones((image2Points.shape[0],1))*Z))
+pv.DrawCube2D(image2Points,plt.gca())
+plt.axis('equal')
+
+plt.subplot(122)
+pv.drawImageFrame2D(img1.camera.sensorSize,img1.camera.sensorSize)
+pv.DrawCube2D(image1Points,plt.gca())
+plt.scatter(image1Points[:,0],image1Points[:,1])
+plt.axis('equal')
+
+
+from ImagePair import ImagePair
+imgPair = ImagePair(img1, img2)
+# imgPair.ImagesToGround(image1Points,image2Points,'geometric')
+# imgPair.geometricIntersection(image1Points,image2Points)
+
 plt.show()
