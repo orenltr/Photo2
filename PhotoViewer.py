@@ -209,7 +209,20 @@ def connectpoints(x, y, z, p1, p2):
     z1, z2 = z[p1-1], z[p2-1]
     plt.plot([x1, x2], [y1, y2],[z1, z2], 'k-')
 
-# def cubeProjection(cube, ):
+def connect2Dpoints(x, y, p1, p2, color):
+    """
+    connect two 2D points
+    :param x: ndarray nX1
+    :param y: ndarray nX1
+    :param p1: number of point in array - integer
+    :param p2: number of point in array - integer
+    :param color: color
+    :return:
+    """
+
+    x1, x2 = x[p1-1], x[p2-1]
+    y1, y2 = y[p1-1], y[p2-1]
+    plt.plot([x1, x2], [y1, y2], color)
 
 
 # if __name__ == '__main__':
