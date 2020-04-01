@@ -84,7 +84,7 @@ class SingleImage(object):
         self.__exteriorOrientationParameters = parametersArray.T
 
     @property
-    def rotationMatrix(self):
+    def RotationMatrix(self):
         """
         The rotation matrix of the image
 
@@ -478,7 +478,7 @@ class SingleImage(object):
         Y0_1 = self.exteriorOrientationParameters[1]
         Z0_1 = self.exteriorOrientationParameters[2]
         O1 = np.array([X0_1, Y0_1, Z0_1]).T
-        R1 = self.rotationMatrix
+        R1 = self.RotationMatrix
         x1 = np.zeros((len(groundPoints), 1))
         y1 = np.zeros((len(groundPoints), 1))
         f = self.camera.focalLength
@@ -661,7 +661,7 @@ class SingleImage(object):
         dY = groundPoints[:,1] - self.exteriorOrientationParameters[1]
         dZ = groundPoints[:,2] - self.exteriorOrientationParameters[2]
         dXYZ = np.vstack([dX, dY, dZ])
-        rotated_XYZ = np.dot(self.rotationMatrix.T, dXYZ).T
+        rotated_XYZ = np.dot(self.RotationMatrix.T, dXYZ).T
 
         l0 = np.empty(n * 2)
 
@@ -695,7 +695,7 @@ class SingleImage(object):
         dZ = groundPoints[:, 2] - self.exteriorOrientationParameters[2]
         dXYZ = np.vstack([dX, dY, dZ])
 
-        rotationMatrixT = self.rotationMatrix.T
+        rotationMatrixT = self.RotationMatrix.T
         rotatedG = rotationMatrixT.dot(dXYZ)
         rT1g = rotatedG[0, :]
         rT2g = rotatedG[1, :]
@@ -774,11 +774,11 @@ class SingleImage(object):
         pixel_size = 0.0000024 # [m]
 
         # images coordinate systems
-        pv.drawOrientation(self.rotationMatrix, self.PerspectiveCenter, 1,ax)
+        pv.drawOrientation(self.RotationMatrix, self.PerspectiveCenter, 1,ax)
 
         # images frames
         pv.drawImageFrame(self.camera.sensorSize/1000*scale, self.camera.sensorSize/1000*scale,
-        self.rotationMatrix, self.PerspectiveCenter,self.camera.focalLength/1000,1,ax)
+        self.RotationMatrix, self.PerspectiveCenter,self.camera.focalLength/1000,1,ax)
 
         # draw rays from perspective centers to model points
         pv.drawRays(modelPoints,self.PerspectiveCenter,ax)
