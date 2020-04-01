@@ -46,9 +46,9 @@ scale = 100
 
 # draw image frame in world system
 img1.drawSingleImage(cube, scale, ax)
+# plt.show()
 
 image1Points = img1.GroundToImage(cube)
-# image1Points = np.hstack((image1Points,np.ones((image1Points.shape[0],1))*Z))
 plt.figure()
 pv.drawImageFrame2D(img1.camera.sensorSize, img1.camera.sensorSize)
 pv.DrawCube2D(image1Points, plt.gca())
@@ -93,77 +93,14 @@ calcCube, sigma = imgPair.geometricIntersection(image1Points, image2Points, 'wor
 
 # analysis
 
-# # base size
-# for i, b in enumerate(np.arange(0.1, 100, 0.01)):
-#
-#     img2.exteriorOrientationParameters = np.array([[b, 0, Z, omega, phi, kappa]])
-#     image2Points = img2.GroundToImage(cube)
-#     # check if still in the image
-#     if np.max(np.abs(image2Points)) > sensor_size / 2:
-#         i -= 1
-#         break
-#     imgPair = ImagePair(img1, img2)
-#     # forward intersection
-#     calcCube, sigma = imgPair.geometricIntersection(image1Points, image2Points, 'world')
-#     if i == 0:
-#         precision = np.linalg.norm(sigma)
-#     else:
-#         precision = np.vstack((precision, np.linalg.norm(sigma)))
-# plt.figure()
-# plt.plot(np.arange(0.1, 100, 0.01)[:i+1], precision)
-#
-# # rotation img2
-# i=0
-# for i, omega in enumerate(np.arange(1e-6, -0.25, -1e-3)):
-#
-#     img2.exteriorOrientationParameters = np.array([[10, 0, Z, omega, phi, kappa]])
-#     image2Points = img2.GroundToImage(cube)
-#     # check if still in the image
-#     if np.max(np.abs(image2Points)) > sensor_size / 2:
-#         i -= 1
-#         break
-#     imgPair = ImagePair(img1, img2)
-#     # forward intersection
-#     calcCube, sigma = imgPair.geometricIntersection(image1Points, image2Points, 'world')
-#     if i == 0:
-#         precision = np.linalg.norm(sigma)
-#     else:
-#         precision = np.vstack((precision, np.linalg.norm(sigma)))
-# plt.figure()
-# plt.subplot(121)
-# plt.plot(np.arange(1e-6, -0.25, -1e-3)[:i + 1], precision)
-#
-# # rotation img1
-# i=0
-# for i, phi in enumerate(np.arange(1e-6, -0.25, -1e-3)):
-#
-#     img1.exteriorOrientationParameters = np.array([[0, 0, Z, omega, phi, kappa]])
-#     image1Points = img1.GroundToImage(cube)
-#     # check if still in the image
-#     if np.max(np.abs(image1Points)) > sensor_size / 2 or np.max(np.abs(image2Points)) > sensor_size / 2:
-#         i -= 1
-#         print("out of image")
-#         break
-#     imgPair = ImagePair(img1, img2)
-#     # forward intersection
-#     calcCube, sigma = imgPair.geometricIntersection(image1Points, image2Points, 'world')
-#     if i == 0:
-#         precision = np.linalg.norm(sigma)
-#     else:
-#         precision = np.vstack((precision, np.linalg.norm(sigma)))
-# plt.subplot(122)
-# plt.plot(np.arange(1e-6, -0.25, -1e-3)[:i + 1], precision)
-
-
-
-
-def runTest(coords,base=10,Z=50,omega=0,phi=0,kappa=0, noiseSizeGround=0, noiseSizeSamples=0):
+def runTest(coords,base=10,Z=50,omega1=0,phi1=0,kappa1=0,
+            omega2=0,phi2=0,kappa2=0, noiseSizeGround=0, noiseSizeSamples=0):
     """
     Runs test by changing parameters
     """
 
-    img1.exteriorOrientationParameters = np.array([[0, 0, Z, 0, 0, 0]])
-    img2.exteriorOrientationParameters = np.array([[base, 0, Z, omega, phi, kappa]])
+    img1.exteriorOrientationParameters = np.array([[0, 0, Z, omega1, phi1, kappa1]])
+    img2.exteriorOrientationParameters = np.array([[base, 0, Z, omega2, phi2, kappa2]])
     noisyCoords = coords.copy()
     # generate ground points
     if noiseSizeGround > 0:
@@ -179,13 +116,70 @@ def runTest(coords,base=10,Z=50,omega=0,phi=0,kappa=0, noiseSizeGround=0, noiseS
     # check if still in the image
     if np.max(np.abs(image1Points)) > sensor_size / 2 or np.max(np.abs(image2Points)) > sensor_size / 2:
         print("out of image")
-        return None
+        return None, None
     imgPair = ImagePair(img1, img2)
     # forward intersection
     calcCoords, sigma = imgPair.geometricIntersection(image1Points, image2Points, 'world')
     diff = np.abs(calcCoords-coords)
 
     return sigma,diff
+
+# change base size
+rangeArray = np.arange(0.01, 50, 0.01)
+for i, base in enumerate(rangeArray):
+    sigma,diff = runTest(cube,base=base)
+    if sigma is None:
+        i -= 1
+        break
+    if i == 0:
+        precision = np.linalg.norm(sigma)
+        diffNorm = np.linalg.norm(diff)
+    else:
+        precision = np.vstack((precision, np.linalg.norm(sigma)))
+        diffNorm = np.vstack((diffNorm, np.linalg.norm(diff)))
+plt.figure()
+plt.subplot(121)
+plt.plot(rangeArray[:i + 1], precision)
+plt.subplot(122)
+plt.plot(rangeArray[:i + 1], diffNorm)
+
+# change img1 phi angle
+rangeArray = np.arange(1e-6, -0.25, -1e-3)
+for i, phi in enumerate(rangeArray):
+    sigma,diff = runTest(cube,phi1=phi,Z=200)
+    if sigma is None:
+        i -= 1
+        break
+    if i == 0:
+        precision = np.linalg.norm(sigma)
+        diffNorm = np.linalg.norm(diff)
+    else:
+        precision = np.vstack((precision, np.linalg.norm(sigma)))
+        diffNorm = np.vstack((diffNorm, np.linalg.norm(diff)))
+plt.figure()
+plt.subplot(121)
+plt.plot(rangeArray[:i + 1], precision)
+plt.subplot(122)
+plt.plot(rangeArray[:i + 1], diffNorm)
+
+# change img2 phi angle
+rangeArray = np.arange(1e-6, -0.25, -1e-3)
+for i, phi in enumerate(rangeArray):
+    sigma,diff = runTest(cube,phi2=phi)
+    if sigma is None:
+        i -= 1
+        break
+    if i == 0:
+        precision = np.linalg.norm(sigma)
+        diffNorm = np.linalg.norm(diff)
+    else:
+        precision = np.vstack((precision, np.linalg.norm(sigma)))
+        diffNorm = np.vstack((diffNorm, np.linalg.norm(diff)))
+plt.figure()
+plt.subplot(121)
+plt.plot(rangeArray[:i + 1], precision)
+plt.subplot(122)
+plt.plot(rangeArray[:i + 1], diffNorm)
 
 # add noise to ground points
 rangeArray = np.arange(0, 0.15, 0.001)
