@@ -76,12 +76,14 @@ pv.drawImageFrame2D(img2.camera.sensorSize, img2.camera.sensorSize)
 plt.scatter(image2Points[:, 0], image2Points[:, 1])
 # image2Points = np.hstack((image2Points,np.ones((image2Points.shape[0],1))*Z))
 pv.DrawCube2D(image2Points, plt.gca())
+plt.title('image 2')
 plt.axis('equal')
 
 plt.subplot(122)
 pv.drawImageFrame2D(img1.camera.sensorSize, img1.camera.sensorSize)
 pv.DrawCube2D(image1Points, plt.gca())
 plt.scatter(image1Points[:, 0], image1Points[:, 1])
+plt.title('image 1')
 plt.axis('equal')
 
 from ImagePair import ImagePair
@@ -138,13 +140,13 @@ for i, base in enumerate(rangeArray):
         precision = np.vstack((precision, np.linalg.norm(sigma)))
         diffNorm = np.vstack((diffNorm, np.linalg.norm(diff)))
 plt.figure()
-plt.subplot(121)
+plt.subplot(111)
+plt.xlabel('size of base [m]')
+plt.ylabel('precision [m]')
 plt.plot(rangeArray[:i + 1], precision)
-plt.subplot(122)
-plt.plot(rangeArray[:i + 1], diffNorm)
 
 # change img1 phi angle
-rangeArray = np.arange(1e-6, -0.25, -1e-3)
+rangeArray = np.radians(np.arange(0, 70, 2))
 for i, phi in enumerate(rangeArray):
     sigma,diff = runTest(cube,phi1=phi,Z=200)
     if sigma is None:
@@ -157,13 +159,13 @@ for i, phi in enumerate(rangeArray):
         precision = np.vstack((precision, np.linalg.norm(sigma)))
         diffNorm = np.vstack((diffNorm, np.linalg.norm(diff)))
 plt.figure()
-plt.subplot(121)
-plt.plot(rangeArray[:i + 1], precision)
-plt.subplot(122)
-plt.plot(rangeArray[:i + 1], diffNorm)
+plt.subplot(111)
+plt.xlabel('angle of rotation [degrees]')
+plt.ylabel('precision [m]')
+plt.plot(np.degrees(rangeArray[:i + 1]), precision)
 
 # change img2 phi angle
-rangeArray = np.arange(1e-6, -0.25, -1e-3)
+rangeArray =np.radians(np.arange(0, 90, 0.1))
 for i, phi in enumerate(rangeArray):
     sigma,diff = runTest(cube,phi2=phi)
     if sigma is None:
@@ -176,10 +178,10 @@ for i, phi in enumerate(rangeArray):
         precision = np.vstack((precision, np.linalg.norm(sigma)))
         diffNorm = np.vstack((diffNorm, np.linalg.norm(diff)))
 plt.figure()
-plt.subplot(121)
-plt.plot(rangeArray[:i + 1], precision)
-plt.subplot(122)
-plt.plot(rangeArray[:i + 1], diffNorm)
+plt.subplot(111)
+plt.xlabel('angle of rotation [degrees]')
+plt.ylabel('precision [m]')
+plt.plot(np.degrees(rangeArray[:i + 1]), precision)
 
 # add noise to ground points
 rangeArray = np.arange(0, 0.15, 0.001)
@@ -197,8 +199,14 @@ for i, noiseSize in enumerate(rangeArray):
 
 plt.figure()
 plt.subplot(121)
+plt.title('precision')
+plt.xlabel('sigma noise')
+plt.ylabel('error [m]')
 plt.plot(rangeArray[:i + 1], precision)
 plt.subplot(122)
+plt.title('difference')
+plt.xlabel('sigma noise')
+plt.ylabel('precision [m]')
 plt.plot(rangeArray[:i + 1], diffNorm)
 
 # add noise to sampled points
@@ -217,8 +225,12 @@ for i, noiseSize in enumerate(rangeArray):
 
 plt.figure()
 plt.subplot(121)
+plt.title('precision')
+plt.xlabel('sigma noise')
+plt.ylabel('error [m]')
 plt.plot(rangeArray[:i + 1], precision)
 plt.subplot(122)
+plt.title('difference')
+plt.xlabel('sigma noise')
+plt.ylabel('precision [m]')
 plt.plot(rangeArray[:i + 1], diffNorm)
-plt.show()
-
