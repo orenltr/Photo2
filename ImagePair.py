@@ -455,21 +455,17 @@ class ImagePair(object):
 
 
         """
-        try:
-            camera_points1 = self.__image1.ImageToCamera(imagePoints1)
-            camera_points2 = self.__image2.ImageToCamera(imagePoints2)
+        camera_points1 = self.__image1.ImageToCamera(imagePoints1)
+        camera_points2 = self.__image2.ImageToCamera(imagePoints2)
 
-            if Method == 'vector':
-                X, v = self.vectorIntersction(camera_points1, camera_points2)
-            elif Method == 'geometric':
-                X, v = self.geometricIntersection(camera_points1, camera_points2)
-            else:
-                print('no such method')
+        if Method == 'vector':
+            X, v = self.vectorIntersction(camera_points1, camera_points2)
+        elif Method == 'geometric':
+            X, v = self.geometricIntersection(camera_points1, camera_points2)
+        else:
+            print('no such method')
 
-            return X, v
-
-        except:
-            print("no such method")
+        return X, v
 
     def GroundToImage(self, groundPoints):
         """
@@ -513,15 +509,17 @@ class ImagePair(object):
             img_points2 = self.__image2.CameraToImage(camera_points2)
         return img_points1, img_points2
 
-    def geometricIntersection(self, cameraPoints1, cameraPoints2):
+    def geometricIntersection(self, cameraPoints1, cameraPoints2, system='relative'):
         """
         Ray Intersection based on geometric calculations.
 
         :param cameraPoints1: points in the first image
         :param cameraPoints2: corresponding points in the second image
+        :param system: world or relative
 
         :type cameraPoints1: np.array nx3
         :type cameraPoints2: np.array nx3
+        :type system: str 'world' or 'relative'
 
         :return: lambda1, lambda2 scalars
 
@@ -535,23 +533,38 @@ class ImagePair(object):
         image1 = self.__image1
         image2 = self.__image2
 
-        X0_1 = self.PerspectiveCenter_Image1[0]
-        Y0_1 = self.PerspectiveCenter_Image1[1]
-        Z0_1 = self.PerspectiveCenter_Image1[2]
-        X0_2 = self.PerspectiveCenter_Image2[0]
-        Y0_2 = self.PerspectiveCenter_Image2[1]
-        Z0_2 = self.PerspectiveCenter_Image2[2]
-        O1 = np.array([X0_1, Y0_1, Z0_1]).T
-        O2 = np.array([X0_2, Y0_2, Z0_2]).T
-        R1 = self.RotationMatrix_Image1
-        R2 = self.RotationMatrix_Image2
+        if system == 'relative':
+            X0_1 = self.PerspectiveCenter_Image1[0]
+            Y0_1 = self.PerspectiveCenter_Image1[1]
+            Z0_1 = self.PerspectiveCenter_Image1[2]
+            X0_2 = self.PerspectiveCenter_Image2[0]
+            Y0_2 = self.PerspectiveCenter_Image2[1]
+            Z0_2 = self.PerspectiveCenter_Image2[2]
+            O1 = np.array([X0_1, Y0_1, Z0_1]).T
+            O2 = np.array([X0_2, Y0_2, Z0_2]).T
+            R1 = self.RotationMatrix_Image1
+            R2 = self.RotationMatrix_Image2
+        elif system == 'world':
+            X0_1 = image1.PerspectiveCenter[0]
+            Y0_1 = image1.PerspectiveCenter[1]
+            Z0_1 = image1.PerspectiveCenter[2]
+            X0_2 = image2.PerspectiveCenter[0]
+            Y0_2 = image2.PerspectiveCenter[1]
+            Z0_2 = image2.PerspectiveCenter[2]
+            O1 = np.array([X0_1, Y0_1, Z0_1]).T
+            O2 = np.array([X0_2, Y0_2, Z0_2]).T
+            R1 = image1.RotationMatrix
+            R2 = image2.RotationMatrix
+        else:
+            print('system need to be "relative" or "world"')
+            return
 
         X = np.zeros([len(cameraPoints1), 3])  # optimal point
-        # sigma = np.zeros([len(cameraPoints1), 3])
+        Sigma = np.zeros([len(cameraPoints1), 3])   # variance matrix
 
-        dO = O2 - O1
 
         for i in range(len(cameraPoints1)):
+
             # compute rays
             v1 = np.dot(R1, np.array([[cameraPoints1[i, 0],
                                        cameraPoints1[i, 1],
@@ -561,14 +574,22 @@ class ImagePair(object):
                                        -image2.camera.focalLength]]).T)
             v1_normelized = v1 / np.linalg.norm(v1)
             v2_normelized = v2 / np.linalg.norm(v2)
+
             # adjustment
             A = np.vstack((np.eye(3) - np.outer(v1_normelized, v1_normelized.T),
                            np.eye(3) - np.outer(v2_normelized, v2_normelized.T)))
             l = np.vstack((A[0:3].dot(O1.T), A[3:].dot(O2.T)))
-            X[i] = (np.linalg.inv(np.dot(A.T, A)).dot(A.T).dot(l)).T
+            N = np.dot(A.T, A)
+            N_inv = np.linalg.inv(N)
+            U = np.dot(A.T,l)
+            X[i] = np.dot(N_inv,U).T
+
+            # precision
             V = np.dot(A, X[i].T) - l[:, 0]
-            # sigma[i] = (V.T*V)/(6-3)
-        return X, V
+            sigma0 = np.dot(V.T,V)/(6-3)
+            Sigma[i] = np.diag(sigma0*N_inv)
+        Sigma = np.sqrt(Sigma)
+        return X, Sigma
 
     def vectorIntersction(self, cameraPoints1, cameraPoints2):
         """

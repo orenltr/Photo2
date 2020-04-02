@@ -193,6 +193,27 @@ def DrawCube(Cube,ax):
     # ImagePair.set_axes_equal(ax)
     # plt.show()
 
+def DrawCube2D(Cube,ax):
+    """
+
+    :param Cube: ndarray nX2 [x,y]
+    :return: void
+    """
+    x = Cube[:, 0]
+    y = Cube[:, 1]
+    connectpoints2D(x,y,1,2)
+    connectpoints2D(x,y,2,3)
+    connectpoints2D(x,y,3,4)
+    connectpoints2D(x,y,1,4)
+    connectpoints2D(x,y,4,5)
+    connectpoints2D(x,y,5,6)
+    connectpoints2D(x,y,6,7)
+    connectpoints2D(x,y,7,8)
+    connectpoints2D(x,y,8,5)
+    connectpoints2D(x,y,3,6)
+    connectpoints2D(x,y,1,8)
+    connectpoints2D(x,y,2,7)
+
 def connectpoints(x, y, z, p1, p2):
     """
     connect two points
@@ -206,7 +227,7 @@ def connectpoints(x, y, z, p1, p2):
 
     x1, x2 = x[p1-1], x[p2-1]
     y1, y2 = y[p1-1], y[p2-1]
-    z1, z2 = z[p1-1], z[p2-1]
+    z1, z2 = z[p1 - 1], z[p2 - 1]
     plt.plot([x1, x2], [y1, y2],[z1, z2], 'k-')
 
 def connect2Dpoints(x, y, p1, p2, color):
@@ -223,7 +244,36 @@ def connect2Dpoints(x, y, p1, p2, color):
     x1, x2 = x[p1-1], x[p2-1]
     y1, y2 = y[p1-1], y[p2-1]
     plt.plot([x1, x2], [y1, y2], color)
+def connectpoints2D(x, y, p1, p2):
+    """
+    connect two points
+    :param x: ndarray nX1
+    :param y: ndarray nX1
+    :param z: ndarray nX1
+    :param p1: number of point in array - integer
+    :param p2: number of point in array - integer
+    :return:
+    """
 
+    x1, x2 = x[p1-1], x[p2-1]
+    y1, y2 = y[p1-1], y[p2-1]
+    plt.plot([x1, x2], [y1, y2], 'k-')
+# def cubeProjection(cube, ):
+
+def connect2Dpoints(x, y, p1, p2, color):
+    """
+    connect two 2D points
+    :param x: ndarray nX1
+    :param y: ndarray nX1
+    :param p1: number of point in array - integer
+    :param p2: number of point in array - integer
+    :param color: color
+    :return:
+    """
+
+    x1, x2 = x[p1-1], x[p2-1]
+    y1, y2 = y[p1-1], y[p2-1]
+    plt.plot([x1, x2], [y1, y2], color)
 
 # if __name__ == '__main__':
 #     fig = plt.figure()
