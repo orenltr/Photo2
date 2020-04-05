@@ -3,6 +3,144 @@ import numpy.core.arrayprint as arrayprint
 from json import dumps, dump, load, loads
 import contextlib
 
+
+def Compute3DRotationMatrix_RzRyRz(azimuth, phi, kappa):
+    """
+    Computes a 3x3 rotation matrix defined by the 3 given angles
+
+    :param azimuth: Rotation angle around the optic axis (radians)
+    :param phi: Rotation angle around the y-axis (radians)
+    :param kappa: Rotation angle around the z-axis (radians)
+
+    :type azimuth: float
+    :type phi: float
+    :type kappa: float
+
+
+    :return: The corresponding 3D rotation matrix
+    :rtype: array  (3x3)
+
+    **Examples**
+
+    1. Rotation matrix with rotation around the optic-axis only:
+
+        .. code-block:: py
+
+            from numpy import pi
+            Compute3DRotationMatrix(30 * pi / 180.0, 0.0, 0.0)
+
+    2. Rotation matrix with rotation around the y-axis only:
+
+        .. code-block:: py
+
+            from numpy import pi
+            Compute3DRotationMatrix(0.0, 30 * pi / 180.0, 0.0)
+
+    3. Rotation matrix with rotation around the z-axis only:
+
+        .. code-block:: py
+
+            from numpy import pi
+            Compute3DRotationMatrix(0.0, 0.0, 30 * pi / 180.0)
+
+    4. Rotation matrix with rotation of 5, 2, and 30 around the optic, y, and z axes respectively:
+
+        .. code-block:: py
+
+            from numpy import pi
+            Compute3DRotationMatrix(5 * pi / 180.0, 2 * pi / 180.0, 30 * pi / 180.0)
+
+    """
+    # Rotation matrix around the z-axis
+    rAzimuth = array([[cos(azimuth), -sin(azimuth), 0],
+                    [sin(azimuth), cos(azimuth), 0],
+                    [0, 0, 1]], 'f')
+
+    # Rotation matrix around the y-axis
+    rPhi = array([[cos(phi), 0, sin(phi)],
+                  [0, 1, 0],
+                  [-sin(phi), 0, cos(phi)]], 'f')
+
+    # Rotation matrix around the z-axis
+    rKappa = array([[cos(kappa), -sin(kappa), 0],
+                    [sin(kappa), cos(kappa), 0],
+                    [0, 0, 1]], 'f')
+
+    return dot(dot(rAzimuth, rPhi), rKappa)
+
+
+def Compute3DRotationDerivativeMatrix_RzRyRz(azimuth, phi, kappa, var):
+    """
+    Computing the derivative of the 3D rotaion matrix defined by the angles according to one of the angles
+
+    :param azimuth: Rotation angle around the optic axis (radians)
+    :param phi: Rotation angle around the y-axis (radians)
+    :param kappa: Rotation angle around the z-axis (radians)
+    :param var: Name of the angle to compute the derivative by (azimuth/phi/kappa) (string)
+
+    :type azimuth: float
+    :type phi: float
+    :type kappa: float
+    :type var: str
+
+    :return: The corresponding derivative matrix (3x3, ndarray). If var is not one of euler angles, the method will return None
+
+
+    **Examples**
+
+    1. Derivative matrix with respect to :math:\azimuth:
+
+        .. code-block:: py
+
+            from numpy import pi
+            Compute3DRotationDerivativeMatrix(5 * pi / 180.0, 2 * pi / 180.0, 30 * pi / 180.0, 'omega')
+
+    2. Derivative matrix with respect to :math:\phi:
+
+        .. code-block:: py
+
+            from numpy import pi
+            Compute3DRotationDerivativeMatrix(5 * pi / 180.0, 2 * pi / 180.0, 30 * pi / 180.0, 'phi')
+
+    3. Derivative matrix with respect to :math:\kappa:
+
+        .. code-block:: py
+
+            from numpy import pi
+            Compute3DRotationDerivativeMatrix(5 * pi / 180.0, 2 * pi / 180.0, 30 * pi / 180.0, 'kappa')
+
+    """
+    # Rotation matrix around the z-axis
+    rAzimut = array([[cos(azimuth), -sin(azimuth), 0],
+                     [sin(azimuth), cos(azimuth), 0],
+                     [0, 0, 1]], 'f')
+
+    # Rotation matrix around the y-axis
+    rPhi = array([[cos(phi), 0, sin(phi)],
+                  [0, 1, 0],
+                  [-sin(phi), 0, cos(phi)]], 'f')
+
+    # Rotation matrix around the z-axis
+    rKappa = array([[cos(kappa), -sin(kappa), 0],
+                    [sin(kappa), cos(kappa), 0],
+                    [0, 0, 1]], 'f')
+
+    # Computing the derivative matrix based on requested parameter
+    if var == 'azimuth':
+        d = array([[0, -1, 0], [1, 0, 0], [0, 0, 0]], 'f')
+        res = dot(d, dot(rAzimut, dot(rPhi, rKappa)))
+    elif var == 'phi':
+        d = array([[0, 0, 1], [0, 0, 0], [-1, 0, 0]], 'f')
+        res = dot(rAzimut, dot(d, dot(rPhi, rKappa)))
+    elif var == 'kappa':
+        d = array([[0, -1, 0], [1, 0, 0], [0, 0, 0]], 'f')
+        res = dot(rAzimut, dot(rPhi, dot(d, rKappa)))
+    else:
+        res = None
+
+    return res
+
+
 def Compute3DRotationMatrix(omega, phi, kappa):
     """
     Computes a 3x3 rotation matrix defined by euler angles given in radians
@@ -52,18 +190,18 @@ def Compute3DRotationMatrix(omega, phi, kappa):
     """
     # Rotation matrix around the x-axis
     rOmega = array([[1, 0, 0],
-                     [0, cos(omega), -sin(omega)],
-                     [0, sin(omega), cos(omega)]], 'f')
+                    [0, cos(omega), -sin(omega)],
+                    [0, sin(omega), cos(omega)]], 'f')
 
     # Rotation matrix around the y-axis
     rPhi = array([[cos(phi), 0, sin(phi)],
-                   [0, 1, 0],
-                   [-sin(phi), 0, cos(phi)]], 'f')
+                  [0, 1, 0],
+                  [-sin(phi), 0, cos(phi)]], 'f')
 
     # Rotation matrix around the z-axis
     rKappa = array([[cos(kappa), -sin(kappa), 0],
-                     [sin(kappa), cos(kappa), 0],
-                     [0, 0, 1]], 'f')
+                    [sin(kappa), cos(kappa), 0],
+                    [0, 0, 1]], 'f')
 
     return dot(dot(rOmega, rPhi), rKappa)
 
@@ -140,7 +278,6 @@ def Compute3DRotationDerivativeMatrix(omega, phi, kappa, var):
     return res
 
 
-
 def ComputeSkewMatrixFromVector(vec):
     """
     Computing the 3x3 skew matrix from a given vector
@@ -163,15 +300,14 @@ def ComputeSkewMatrixFromVector(vec):
     if (len(vec) != 3):
         return None
 
-    vec = vec.reshape((-1, )) # reshaping the vector to a 1-d array
+    vec = vec.reshape((-1,))  # reshaping the vector to a 1-d array
 
     return array([[0, -vec[2], vec[1]],
                   [vec[2], 0, -vec[0]],
                   [-vec[1], vec[0], 0]], 'f')
 
 
-
-def PrintMatrix(matrixToPrint, title = None, decimalPrecision = 2, integralPrecision = 6):
+def PrintMatrix(matrixToPrint, title=None, decimalPrecision=2, integralPrecision=6):
     """
     Method for Printing a matrix with defined preciesion
 
@@ -208,7 +344,6 @@ def PrintMatrix(matrixToPrint, title = None, decimalPrecision = 2, integralPreci
             print(frmt % matrixToPrint[i, j], end='')
         print('')
     print('')
-
 
 
 @contextlib.contextmanager
@@ -320,30 +455,29 @@ def MatrixToLatex(a, name, units='-', decimals=4, tab='  '):
     return template.format(**subs)
 
 
-
 if __name__ == "__main__":
     from numpy import pi
 
     # Examples for creating rotation matrices
     print('Rotation matrix with rotation around the x-axis only:')
-    print(Compute3DRotationMatrix(30 * pi / 180.0, 0.0, 0.0))
+    print(Compute3DRotationMatrix_RzRyRz(30 * pi / 180.0, 0.0, 0.0))
     print('Rotation matrix with rotation around the y-axis only:')
-    print(Compute3DRotationMatrix(0.0, 30 * pi / 180.0, 0.0))
+    print(Compute3DRotationMatrix_RzRyRz(0.0, 30 * pi / 180.0, 0.0))
     print('Rotation matrix with rotation around the z-axis only:')
-    print(Compute3DRotationMatrix(0.0, 0.0, 30 * pi / 180.0))
+    print(Compute3DRotationMatrix_RzRyRz(0.0, 0.0, 30 * pi / 180.0))
     print('Rotation matrix with rotation of 5, 2, and 30 around the x, y, and z axes respectively:')
-    print(Compute3DRotationMatrix(5 * pi / 180.0, 2 * pi / 180.0, 30 * pi / 180.0))
+    print(Compute3DRotationMatrix_RzRyRz(5 * pi / 180.0, 2 * pi / 180.0, 30 * pi / 180.0))
 
     # Examples for creating derivative matrices
     print('The derivative matrices:')
     print('    With respect to omega:')
-    print(Compute3DRotationDerivativeMatrix(5 * pi / 180.0, 2 * pi / 180.0, 30 * pi / 180.0, 'omega'))
+    print(Compute3DRotationDerivativeMatrix_RzRyRz(5 * pi / 180.0, 2 * pi / 180.0, 30 * pi / 180.0, 'omega'))
     print('    With respect to phi:')
-    print(Compute3DRotationDerivativeMatrix(5 * pi / 180.0, 2 * pi / 180.0, 30 * pi / 180.0, 'phi'))
+    print(Compute3DRotationDerivativeMatrix_RzRyRz(5 * pi / 180.0, 2 * pi / 180.0, 30 * pi / 180.0, 'phi'))
     print('    With respect to kappa:')
-    print(Compute3DRotationDerivativeMatrix(5 * pi / 180.0, 2 * pi / 180.0, 30 * pi / 180.0, 'kappa'))
+    print(Compute3DRotationDerivativeMatrix_RzRyRz(5 * pi / 180.0, 2 * pi / 180.0, 30 * pi / 180.0, 'kappa'))
     print('    Example of sending a wrong argument:')
-    print(Compute3DRotationDerivativeMatrix(5 * pi / 180.0, 2 * pi / 180.0, 30 * pi / 180.0, 'Omega'))
+    print(Compute3DRotationDerivativeMatrix_RzRyRz(5 * pi / 180.0, 2 * pi / 180.0, 30 * pi / 180.0, 'Omega'))
 
     # Example for creating a skew matrix
     print('Skew matrix of the vector (1, 2, 3):')
