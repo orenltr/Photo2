@@ -1,27 +1,31 @@
 import numpy as np
 import math
 from Camera import Camera
-from MatrixMethods import Compute3DRotationMatrix, Compute3DRotationDerivativeMatrix
+from MatrixMethods import *
 import PhotoViewer as pv
 import matplotlib as plt
 
+
 class SingleImage(object):
 
-    def __init__(self, camera):
+    def __init__(self, camera, type='real'):
         """
         Initialize the SingleImage object
 
         :param camera: instance of the Camera class
+        :param type: real image or synthetic
         :param points: points in image space
 
         :type camera: Camera
+        :type type: string 'real' or 'synthetic'
         :type points: np.array
 
         """
+        self.__type = type
         self.__camera = camera
         self.__innerOrientationParameters = None
         self.__isSolved = False
-        self.__exteriorOrientationParameters = np.array([[0, 0, 0, 0, 0, 0]]).T
+        self.__exteriorOrientationParameters = np.array([[0, 0, 0, 0, 0, 0]], 'f').T
         # self.__exteriorOrientationParameters = np.array([0, 0, 0, 0, 0, 0], 'f')
         self.__rotationMatrix = None
 
@@ -44,6 +48,7 @@ class SingleImage(object):
         :rtype: dictionary
         """
         return self.__innerOrientationParameters
+
     @innerOrientationParameters.setter
     def innerOrientationParameters(self, parametersArray):
         r"""
@@ -57,8 +62,10 @@ class SingleImage(object):
             self.exteriorOrintationParameters = parametersArray
 
         """
-        self.__innerOrientationParameters = {'a0': parametersArray[0], 'a1': parametersArray[1], 'a2': parametersArray[2],
-                                             'b0': parametersArray[3], 'b1': parametersArray[4], 'b2': parametersArray[5]}
+        self.__innerOrientationParameters = {'a0': parametersArray[0], 'a1': parametersArray[1],
+                                             'a2': parametersArray[2],
+                                             'b0': parametersArray[3], 'b1': parametersArray[4],
+                                             'b2': parametersArray[5]}
 
     @property
     def camera(self):
@@ -69,6 +76,16 @@ class SingleImage(object):
 
         """
         return self.__camera
+
+    @property
+    def type(self):
+        """
+        real image or synthetic
+
+        :rtype: string
+
+        """
+        return self.__type
 
     @property
     def exteriorOrientationParameters(self):
@@ -109,9 +126,13 @@ class SingleImage(object):
 
         :rtype: np.ndarray (3x3)
         """
-
-        R = Compute3DRotationMatrix(self.exteriorOrientationParameters[3], self.exteriorOrientationParameters[4],
-                                    self.exteriorOrientationParameters[5])
+        if self.type == 'real':
+            R = Compute3DRotationMatrix(self.exteriorOrientationParameters[3], self.exteriorOrientationParameters[4],
+                                        self.exteriorOrientationParameters[5])
+        else:
+            R = Compute3DRotationMatrix_RzRyRz(self.exteriorOrientationParameters[3],
+                                               self.exteriorOrientationParameters[4],
+                                               self.exteriorOrientationParameters[5])
 
         return R
 
@@ -136,6 +157,17 @@ class SingleImage(object):
         :rtype: np.array (3, )
         """
         return self.exteriorOrientationParameters[0:3]
+
+    # @exteriorOrientationParameters.setter
+    # def PerspectiveCenter(self,x,y,z):
+    #     """
+    #     return the perspective center of the first image
+    #
+    #     :return: perspective center
+    #
+    #     :rtype: np.array (3, )
+    #     """
+    #     self.__exteriorOrientationParameters[0:3] = np.array([x,y,z])
 
     def ComputeInnerOrientation(self, imagePoints):
         r"""
@@ -177,18 +209,17 @@ class SingleImage(object):
         """
         if self.camera.fiducialMarks == 'no fiducials':  # case of digital camera
             pixel_size = 0.0024  # [mm]
-            a1 = 1/pixel_size
-            b2 = -1/pixel_size
+            a1 = 1 / pixel_size
+            b2 = -1 / pixel_size
             a2 = 0
             b1 = 0
-            a0 = self.camera.principalPoint[0]/pixel_size
-            b0 = self.camera.principalPoint[1]/pixel_size
+            a0 = self.camera.principalPoint[0] / pixel_size
+            b0 = self.camera.principalPoint[1] / pixel_size
             self.__innerOrientationParameters = {'a0': a0, 'a1': a1, 'a2': a2, 'b0': b0, 'b1': b1, 'b2': b2,
-                    'V': 0, 'sigma0': 0, 'sigmaX': 0}
+                                                 'V': 0, 'sigma0': 0, 'sigmaX': 0}
             return {'a0': a0, 'a1': a1, 'a2': a2, 'b0': b0, 'b1': b1, 'b2': b2,
                     'V': 0, 'sigma0': 0, 'sigmaX': 0}
         else:
-
 
             # observation vector
             l = np.matrix(imagePoints).flatten('F').T
@@ -210,22 +241,21 @@ class SingleImage(object):
             # adjusted variables
             X = (np.linalg.inv(N)).dot(U)
             # v remainders vector
-            v = A.dot(X)-l
+            v = A.dot(X) - l
 
             # sigma posteriory
             u = 6
-            r = len(l)-u
+            r = len(l) - u
             sigma0 = ((v.T).dot(v)) / r
             sigmaX = sigma0[0, 0] * (np.linalg.inv(N))
             # update field
-            self.__innerOrientationParameters = {'a0': X[0, 0], 'a1': X[1, 0], 'a2': X[2, 0], 'b0': X[3, 0], 'b1': X[4, 0],
+            self.__innerOrientationParameters = {'a0': X[0, 0], 'a1': X[1, 0], 'a2': X[2, 0], 'b0': X[3, 0],
+                                                 'b1': X[4, 0],
                                                  'b2': X[5, 0],
                                                  'V': v, 'sigma0': sigma0[0, 0], 'sigmaX': sigmaX}
 
             return {'a0': X[0, 0], 'a1': X[1, 0], 'a2': X[2, 0], 'b0': X[3, 0], 'b1': X[4, 0], 'b2': X[5, 0],
                     'V': v, 'sigma0': sigma0[0, 0], 'sigmaX': sigmaX}
-
-
 
     def ComputeGeometricParameters(self):
         """
@@ -249,18 +279,14 @@ class SingleImage(object):
         x = self.__innerOrientationParameters
         tx = x['a0']
         ty = x['b0']
-        tetha = np.arctan((x['b1']/x['b2']))
-        gamma = np.arctan((x['a1']*np.sin(tetha)+x['a2']*np.cos(tetha))
-                          /(x['b1']*np.sin(tetha)+x['b2']*np.cos(tetha)))
-        sx = x['a1']*np.cos(tetha)-x['a2']*np.sin(tetha)
-        sy = (x['a1']*np.sin(tetha)+x['a2']*np.cos(tetha))/(np.sin(gamma))
+        tetha = np.arctan((x['b1'] / x['b2']))
+        gamma = np.arctan((x['a1'] * np.sin(tetha) + x['a2'] * np.cos(tetha))
+                          / (x['b1'] * np.sin(tetha) + x['b2'] * np.cos(tetha)))
+        sx = x['a1'] * np.cos(tetha) - x['a2'] * np.sin(tetha)
+        sy = (x['a1'] * np.sin(tetha) + x['a2'] * np.cos(tetha)) / (np.sin(gamma))
 
         return {'translationX': tx, 'translationY': ty, 'rotationAngle': tetha,
                 'scaleFactorX': sx, 'scaleFactorY': sy, 'shearAngle': gamma}
-
-
-
-
 
     def ComputeInverseInnerOrientation(self):
         """
@@ -280,12 +306,11 @@ class SingleImage(object):
             their type is as you decided when implementing
         """
         inner = self.__innerOrientationParameters
-        matrix = np.array([[inner['a1'],inner['a2']],[inner['b1'],inner['b2']]])
+        matrix = np.array([[inner['a1'], inner['a2']], [inner['b1'], inner['b2']]])
         # inverse matrix
         inv_matrix = np.linalg.inv(matrix)
         return {'a0*': -inner['a0'], 'a1*': inv_matrix[0, 0], 'a2*': inv_matrix[0, 1],
                 'b0*': -inner['b0'], 'b1*': inv_matrix[1, 0], 'b2*': inv_matrix[1, 1]}
-
 
     def CameraToImage(self, cameraPoints):
         """
@@ -329,13 +354,12 @@ class SingleImage(object):
         # get algebric parameters
         inner = self.__innerOrientationParameters
 
-        imgPoints = np.zeros((len(cameraPoints[:,0]),2))
-        for i in range(len(cameraPoints[:,0])):
-            imgPoints[i,0] = inner['a0']+inner['a1']*cameraPoints[i,0]+inner['a2']*cameraPoints[i,1]
-            imgPoints[i,1] = inner['b0']+inner['b1']*cameraPoints[i,0]+inner['b2']*cameraPoints[i,1]
+        imgPoints = np.zeros((len(cameraPoints[:, 0]), 2))
+        for i in range(len(cameraPoints[:, 0])):
+            imgPoints[i, 0] = inner['a0'] + inner['a1'] * cameraPoints[i, 0] + inner['a2'] * cameraPoints[i, 1]
+            imgPoints[i, 1] = inner['b0'] + inner['b1'] * cameraPoints[i, 0] + inner['b2'] * cameraPoints[i, 1]
 
         return imgPoints
-
 
     def ImageToCamera(self, imagePoints):
         """
@@ -382,11 +406,12 @@ class SingleImage(object):
 
         camPoints = np.zeros((len(imagePoints[:, 0]), 2))
         for i in range(len(imagePoints[:, 0])):
-            camPoints[i, 0] = inv_param['a1*']*(imagePoints[i,0]+inv_param['a0*']) + inv_param['a2*']*(imagePoints[i,1]+inv_param['b0*'])
-            camPoints[i, 1] = inv_param['b1*']*(imagePoints[i,0]+inv_param['a0*']) + inv_param['b2*']*(imagePoints[i,1]+inv_param['b0*'])
+            camPoints[i, 0] = inv_param['a1*'] * (imagePoints[i, 0] + inv_param['a0*']) + inv_param['a2*'] * (
+                        imagePoints[i, 1] + inv_param['b0*'])
+            camPoints[i, 1] = inv_param['b1*'] * (imagePoints[i, 0] + inv_param['a0*']) + inv_param['b2*'] * (
+                        imagePoints[i, 1] + inv_param['b0*'])
 
         return camPoints
-
 
     def ComputeExteriorOrientation(self, imagePoints, groundPoints, epsilon):
         """
@@ -411,17 +436,6 @@ class SingleImage(object):
 
         :rtype: dict
 
-
-        .. warning::
-
-           - This function is empty, need implementation
-           - Decide how the parameters are held, don't forget to update documentation
-
-        .. note::
-
-            - Don't forget to update the ``self.exteriorOrientationParameters`` member (every iteration and at the end).
-            - Don't forget to call ``cameraPoints = self.ImageToCamera(imagePoints)`` to correct the coordinates              that are sent to ``self.__ComputeApproximateVals(cameraPoints, groundPoints)``
-            - return values can be a tuple of dictionaries and arrays.
 
         **Usage Example**
 
@@ -476,8 +490,6 @@ class SingleImage(object):
             sigmaX = None
 
         return self.exteriorOrientationParameters, sigma0, sigmaX
-
-
 
     def GroundToImage(self, groundPoints):
         """
@@ -593,11 +605,6 @@ class SingleImage(object):
 
         return np.vstack([X, Y, Z]).T
 
-
-
-
-
-
     # ---------------------- Private methods ----------------------
 
     def ComputeApproximateVals(self, cameraPoints, groundPoints):
@@ -676,9 +683,9 @@ class SingleImage(object):
         n = groundPoints.shape[0]  # number of points
 
         # Coordinates subtraction
-        dX = groundPoints[:,0] - self.exteriorOrientationParameters[0]
-        dY = groundPoints[:,1] - self.exteriorOrientationParameters[1]
-        dZ = groundPoints[:,2] - self.exteriorOrientationParameters[2]
+        dX = groundPoints[:, 0] - self.exteriorOrientationParameters[0]
+        dY = groundPoints[:, 1] - self.exteriorOrientationParameters[1]
+        dZ = groundPoints[:, 2] - self.exteriorOrientationParameters[2]
         dXYZ = np.vstack([dX, dY, dZ])
         rotated_XYZ = np.dot(self.RotationMatrix.T, dXYZ).T
 
@@ -741,9 +748,15 @@ class SingleImage(object):
         dxdZ0 = -focalBySqauredRT3g * np.dot(dxdg, dgdZ0)
         dydZ0 = -focalBySqauredRT3g * np.dot(dydg, dgdZ0)
 
-        dRTdOmega = Compute3DRotationDerivativeMatrix(omega, phi, kappa, 'omega').T
-        dRTdPhi = Compute3DRotationDerivativeMatrix(omega, phi, kappa, 'phi').T
-        dRTdKappa = Compute3DRotationDerivativeMatrix(omega, phi, kappa, 'kappa').T
+        if self.type == 'real':
+            dRTdOmega = Compute3DRotationDerivativeMatrix(omega, phi, kappa, 'omega').T
+            dRTdPhi = Compute3DRotationDerivativeMatrix(omega, phi, kappa, 'phi').T
+            dRTdKappa = Compute3DRotationDerivativeMatrix(omega, phi, kappa, 'kappa').T
+
+        else:
+            dRTdOmega = Compute3DRotationDerivativeMatrix_RzRyRz(omega, phi, kappa, 'omega').T
+            dRTdPhi = Compute3DRotationDerivativeMatrix_RzRyRz(omega, phi, kappa, 'phi').T
+            dRTdKappa = Compute3DRotationDerivativeMatrix_RzRyRz(omega, phi, kappa, 'kappa').T
 
         gRT3g = dXYZ * rT3g
 
@@ -795,18 +808,18 @@ class SingleImage(object):
 
         """
 
-        pixel_size = 0.0000024 # [m]
+        pixel_size = 0.0000024  # [m]
 
         # images coordinate systems
-        pv.drawOrientation(self.RotationMatrix, self.PerspectiveCenter, 1,ax)
+        pv.drawOrientation(self.RotationMatrix, self.PerspectiveCenter, 1, ax)
 
         # images frames
-        pv.drawImageFrame(self.camera.sensorSize/1000*scale, self.camera.sensorSize/1000*scale,
-        self.RotationMatrix, self.PerspectiveCenter,self.camera.focalLength/1000,1,ax)
+        pv.drawImageFrame(self.camera.sensorSize / 1000 * scale, self.camera.sensorSize / 1000 * scale,
+                          self.RotationMatrix, self.PerspectiveCenter, self.camera.focalLength / 1000, 1, ax)
 
         if rays == 'yes':
             # draw rays from perspective center to model points
-            pv.drawRays(modelPoints,self.PerspectiveCenter,ax)
+            pv.drawRays(modelPoints, self.PerspectiveCenter, ax)
 
 
 if __name__ == '__main__':
@@ -819,7 +832,7 @@ if __name__ == '__main__':
                            [-7291.19, -7208.22],
                            [7375.09, 7293.59]])
     cam = Camera(153.42, np.array([0.015, -0.020]), None, None, fMarks)
-    img = SingleImage(camera = cam)
+    img = SingleImage(camera=cam)
     print(img.ComputeInnerOrientation(img_fmarks))
 
     print(img.ImageToCamera(img_fmarks))

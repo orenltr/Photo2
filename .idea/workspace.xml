@@ -2,13 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d53e31d0-77da-41fe-b61e-41f36d3a8fa4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/lab2_main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/Lab2-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/.ipynb_checkpoints/Lab2-checkpoint.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Lab2.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Lab2.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatrixMethods.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatrixMethods.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SingleImage.py" beforeDir="false" afterPath="$PROJECT_DIR$/SingleImage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lab1.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/lab1.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab2_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/lab2_main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,77 +15,14 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lab1_main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="177">
-              <caret line="276" column="8" lean-forward="true" selection-start-line="276" selection-start-column="8" selection-end-line="276" selection-end-column="66" />
-              <folding>
-                <element signature="e#0#31#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lab1.ipynb">
-          <provider selected="true" editor-type-id="ipnb-editor">
-            <state>
-              <selected id="65" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SingleImage.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="112" column="35" selection-start-line="112" selection-start-column="12" selection-end-line="112" selection-end-column="35" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PhotoViewer.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="26" column="4" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ObjectsSynthetic.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="10" lean-forward="true" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="10" />
-            </state>
-          </provider>
-        </entry>
-      </file>
+    <leaf>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lab2_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="222">
-              <caret line="32" column="39" lean-forward="true" selection-start-line="32" selection-start-column="39" selection-end-line="32" selection-end-column="39" />
+            <state relative-caret-position="212">
+              <caret line="65" column="12" lean-forward="true" selection-start-line="65" selection-start-column="12" selection-end-line="65" selection-end-column="12" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/MatrixMethods.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="235">
-              <caret line="198" column="19" lean-forward="true" selection-start-line="198" selection-start-column="19" selection-end-line="198" selection-end-column="19" />
-              <folding>
-                <element signature="e#0#119#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -110,7 +45,11 @@
       <find>innerOrientationParameters</find>
       <find>ImageToGround</find>
       <find>exteriorOrientation</find>
+      <find>imgS</find>
     </findStrings>
+    <replaceStrings>
+      <replace>imgS2</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -120,8 +59,8 @@
       <list>
         <option value="$PROJECT_DIR$/lab1_main.py" />
         <option value="$PROJECT_DIR$/SingleImage.py" />
-        <option value="$PROJECT_DIR$/lab2_main.py" />
         <option value="$PROJECT_DIR$/MatrixMethods.py" />
+        <option value="$PROJECT_DIR$/lab2_main.py" />
       </list>
     </option>
   </component>
@@ -151,6 +90,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="full.screen.before.presentation.mode" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -240,20 +180,27 @@
       <option name="project" value="LOCAL" />
       <updated>1586095866626</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="fix MatrixMethods">
+      <created>1586159479654</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1586159479654</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="735" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.104928456" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.104928456" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.14593698" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39966834" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.38757396" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.20857988" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -265,6 +212,25 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.104928456" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.36981758" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39966834" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.3283582" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Python Console" order="10" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout-to-restore>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -295,21 +261,38 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="some changes" />
     <MESSAGE value="new MatrixMethods" />
-    <option name="LAST_COMMIT_MESSAGE" value="new MatrixMethods" />
+    <MESSAGE value="fix MatrixMethods" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix MatrixMethods" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/SingleImage.py</url>
-          <line>593</line>
+          <line>605</line>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/lab2_main.py</url>
+          <line>57</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/lab2_main.py</url>
+          <line>55</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/SingleImage.py</url>
+          <line>756</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
         <watch expression="len(Z)" language="Python" />
+        <watch expression="imgS2" />
       </configuration>
     </watches-manager>
   </component>
@@ -322,6 +305,16 @@
       </expression>
     </expressions>
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>Compute3DRotationDerivativeMatrix_RzRyRz(omega, phi, kappa, 'omega')</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>np.dot(imgS2.RotationMatrix,imgS2.PerspectiveCenter)</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>(np.pi/180)</expression-string>
         <language-id>Python</language-id>
@@ -347,8 +340,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ObjectsSynthetic.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="10" lean-forward="true" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="10" />
+        <state relative-caret-position="66">
+          <caret line="2" column="10" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="10" />
         </state>
       </provider>
     </entry>
@@ -366,10 +359,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/MatrixMethods.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="69" lean-forward="true" selection-start-line="69" selection-end-line="69" />
+          <folding>
+            <element signature="e#0#119#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lab1_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="276" column="8" lean-forward="true" selection-start-line="276" selection-start-column="8" selection-end-line="276" selection-end-column="66" />
+        <state relative-caret-position="271">
+          <caret line="54" column="51" lean-forward="true" selection-start-line="50" selection-end-line="54" selection-end-column="51" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
@@ -378,35 +381,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/PhotoViewer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="26" column="4" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="4" />
+        <state relative-caret-position="443">
+          <caret line="257" selection-start-line="257" selection-end-line="257" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SingleImage.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="112" column="35" selection-start-line="112" selection-start-column="12" selection-end-line="112" selection-end-column="35" />
+        <state relative-caret-position="193">
+          <caret line="756" column="92" lean-forward="true" selection-start-line="756" selection-start-column="92" selection-end-line="756" selection-end-column="92" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MatrixMethods.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="198" column="19" lean-forward="true" selection-start-line="198" selection-start-column="19" selection-end-line="198" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#119#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lab2_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret line="32" column="39" lean-forward="true" selection-start-line="32" selection-start-column="39" selection-end-line="32" selection-end-column="39" />
+        <state relative-caret-position="212">
+          <caret line="65" column="12" lean-forward="true" selection-start-line="65" selection-start-column="12" selection-end-line="65" selection-end-column="12" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
