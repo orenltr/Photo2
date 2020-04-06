@@ -3,6 +3,7 @@ import math
 from Camera import Camera
 from MatrixMethods import Compute3DRotationMatrix, Compute3DRotationDerivativeMatrix
 import PhotoViewer as pv
+import matplotlib as plt
 
 class SingleImage(object):
 
@@ -43,6 +44,21 @@ class SingleImage(object):
         :rtype: dictionary
         """
         return self.__innerOrientationParameters
+    @innerOrientationParameters.setter
+    def innerOrientationParameters(self, parametersArray):
+        r"""
+
+        :param parametersArray: the parameters to update the ``self.__exteriorOrientationParameters``
+
+        **Usage example**
+
+        .. code-block:: py
+
+            self.exteriorOrintationParameters = parametersArray
+
+        """
+        self.__innerOrientationParameters = {'a0': parametersArray[0], 'a1': parametersArray[1], 'a2': parametersArray[2],
+                                             'b0': parametersArray[3], 'b1': parametersArray[4], 'b2': parametersArray[5]}
 
     @property
     def camera(self):
@@ -434,6 +450,8 @@ class SingleImage(object):
         lb = camera_points.flatten().T
 
         dx = np.ones([6, 1]) * 100000
+
+        # adjustment
         while np.linalg.norm(dx) > epsilon:
             X = self.exteriorOrientationParameters.T
             l0 = self.ComputeObservationVector(groundPoints).T
@@ -564,6 +582,7 @@ class SingleImage(object):
         X = np.zeros(len(Z))
         Y = np.zeros(len(Z))
 
+        # co -linear rule
         for i in range(len(Z)):
             xyf = np.array([camera_points[i, 0] - self.camera.principalPoint[0],
                             camera_points[i, 1] - self.camera.principalPoint[1],
@@ -759,18 +778,23 @@ class SingleImage(object):
 
         return a
 
-    def drawSingleImage(self, modelPoints,scale,ax):
+    def drawSingleImage(self, modelPoints, scale, ax, rays='no', ):
         """
         draws the rays to the modelpoints from the perspective center of the two images
 
         :param modelPoints: points in the model system [ model units]
+        :param scale: scale of image frame
         :param ax: axes of the plot
+        :param rays: rays from perspective center to model points
         :type modelPoints: np.array nx3
+        :type scale: float
         :type ax: plot axes
+        :type rays: 'yes' or 'no'
 
         :return: none
 
         """
+
         pixel_size = 0.0000024 # [m]
 
         # images coordinate systems
@@ -780,8 +804,9 @@ class SingleImage(object):
         pv.drawImageFrame(self.camera.sensorSize/1000*scale, self.camera.sensorSize/1000*scale,
         self.RotationMatrix, self.PerspectiveCenter,self.camera.focalLength/1000,1,ax)
 
-        # draw rays from perspective centers to model points
-        pv.drawRays(modelPoints,self.PerspectiveCenter,ax)
+        if rays == 'yes':
+            # draw rays from perspective center to model points
+            pv.drawRays(modelPoints,self.PerspectiveCenter,ax)
 
 
 if __name__ == '__main__':

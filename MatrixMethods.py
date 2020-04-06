@@ -194,9 +194,9 @@ def Compute3DRotationMatrix(omega, phi, kappa):
                     [0, sin(omega), cos(omega)]], 'f')
 
     # Rotation matrix around the y-axis
-    rPhi = array([[cos(phi), 0, sin(phi)],
+    rPhi = array([[cos(phi), 0, -sin(phi)],
                   [0, 1, 0],
-                  [-sin(phi), 0, cos(phi)]], 'f')
+                  [sin(phi), 0, cos(phi)]], 'f')
 
     # Rotation matrix around the z-axis
     rKappa = array([[cos(kappa), -sin(kappa), 0],
