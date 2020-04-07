@@ -658,7 +658,10 @@ class SingleImage(object):
         # Z0 = groundPoints[0, 2] + lamda * self.camera.focalLength
         Z0 = groundPoints[0, 2] + lamda * self.camera.focalLength
         omega = 0
-        phi = 0
+        if self.type == 'real':
+            phi = 0
+        else:
+            phi = 0.1
         self.exteriorOrientationParameters = np.array([X0, Y0, Z0, omega, phi, kapa])
 
         # self.exteriorOrientationParameters = {'X0': X0, 'Y0': Y0, 'Z0': Z0, 'lamda': lamda,
@@ -754,7 +757,7 @@ class SingleImage(object):
             dRTdKappa = Compute3DRotationDerivativeMatrix(omega, phi, kappa, 'kappa').T
 
         else:
-            dRTdOmega = Compute3DRotationDerivativeMatrix_RzRyRz(omega, phi, kappa, 'omega').T
+            dRTdOmega = Compute3DRotationDerivativeMatrix_RzRyRz(omega, phi, kappa, 'azimuth').T
             dRTdPhi = Compute3DRotationDerivativeMatrix_RzRyRz(omega, phi, kappa, 'phi').T
             dRTdKappa = Compute3DRotationDerivativeMatrix_RzRyRz(omega, phi, kappa, 'kappa').T
 
