@@ -464,9 +464,10 @@ class SingleImage(object):
         lb = camera_points.flatten().T
 
         dx = np.ones([6, 1]) * 100000
-
+        itr = 0
         # adjustment
-        while np.linalg.norm(dx) > epsilon:
+        while np.linalg.norm(dx) > epsilon and itr < 100:
+            itr += 1
             X = self.exteriorOrientationParameters.T
             l0 = self.ComputeObservationVector(groundPoints).T
             L = lb - l0

@@ -90,29 +90,47 @@ print(imgS1.exteriorOrientationParameters)
 
 azimuth = np.radians(np.array([0,45,90,135,180,225,270,315]))
 phi = np.radians(45)
-kappa = np.radians(np.array([0,0,0,0,0,0,0,0]))
+kappa = np.radians(np.array([20,30,40,50,60,70,80,90]))
+# kappa = np.radians(np.array([0,0,0,0,0,0,0,0]))
 Z = 20
 fig3 = plt.figure()
 ax = fig3.add_subplot(111, projection='3d')
 ax.scatter(squere[:,0],squere[:,1],squere[:,2], c='b', s=50,marker='^')
 img1.drawSingleImage(squere,100,ax,'yes')
+images = []
+exterior_before = []
+exterior_after = []
 
 for i in range(len(azimuth)):
     # define image
     imgS = SingleImage(camera1,'synthetic')
+    imgS.innerOrientationParameters = np.array([0, 1, 0, 0, 0, 1])
     imgS.exteriorOrientationParameters = np.array([[0, 0, Z, azimuth[i], phi, kappa[i]]])
     imgS.exteriorOrientationParameters[0:3] = np.dot(imgS.RotationMatrix,imgS.PerspectiveCenter)
-    # draw image
+    # draw image in world system
     imgS.drawSingleImage(squere,100,ax,'yes')
 
-    # imagePoints3 = imgS.GroundToImage(squere)
-    # print(imagePoints3)
-    #
-    # imgS.innerOrientationParameters = np.array([0,1,0,0,0,1])
-    # imgS.exteriorOrientationParameters, sigma0, sigmaX = imgS.ComputeExteriorOrientation(imagePoints3,squere,0.001)
-    # print(imgS.exteriorOrientationParameters)
-    #
+    images.append(imgS)
+    exterior_before.append(imgS.exteriorOrientationParameters)
 
+    # draw in camera system
+    imagePoints_S = imgS.GroundToImage(squere)
+    plt.figure()
+    pv.drawImageFrame2D(imgS.camera.sensorSize, imgS.camera.sensorSize)
+    plt.scatter(imagePoints_S[:, 0], imagePoints_S[:, 1])
+
+
+
+
+
+for imgS in images:
+    imagePoints3 = imgS.GroundToImage(squere)
+    print('samples:', '\n', imagePoints3)
+    print('Exterior Orientation before:', '\n', imgS.exteriorOrientationParameters)
+    imgS.exteriorOrientationParameters, sigma0, sigmaX = imgS.ComputeExteriorOrientation(imagePoints3, squere,0.001)
+    print('Exterior Orientation:', '\n', imgS.exteriorOrientationParameters)
+    print("sigma X-diag:",'\n',np.diag(sigmaX))
+    exterior_after.append(imgS.exteriorOrientationParameters)
 
 
 plt.show()
