@@ -88,11 +88,13 @@ print(imgS1.exteriorOrientationParameters)
 # שלב 2
 # define 8 synthetic image
 
-azimuth = np.radians(np.array([0,45,90,135,180,225,270,315]))
-phi = np.radians(45)
-kappa = np.radians(np.array([20,30,40,50,60,70,80,90]))
+azimuth = np.radians(np.array([0,0,0,0,0,0,15,45,90,0,0]))
+phi = np.radians(np.array([0,0,0,0,0,0,5,15,30,60,80]))
+kappa = np.radians(np.array([0,0,0,0,0,0,0,0,0,60,60]))
 # kappa = np.radians(np.array([0,0,0,0,0,0,0,0]))
-Z = 20
+Z = np.array([50,100,500,100,100,100,50,50,50,50,50])
+X = np.array([0,0,0,5,20,30,0,0,0,0,0])
+Y = np.array([0,0,0,0,20,30,0,0,0,0,0])
 fig3 = plt.figure()
 ax = fig3.add_subplot(111, projection='3d')
 ax.scatter(squere[:,0],squere[:,1],squere[:,2], c='b', s=50,marker='^')
@@ -105,7 +107,7 @@ for i in range(len(azimuth)):
     # define image
     imgS = SingleImage(camera1,'synthetic')
     imgS.innerOrientationParameters = np.array([0, 1, 0, 0, 0, 1])
-    imgS.exteriorOrientationParameters = np.array([[0, 0, Z, azimuth[i], phi, kappa[i]]])
+    imgS.exteriorOrientationParameters = np.array([[X[i], Y[i], Z[i], kappa[i], phi[i], azimuth[i]]])
     imgS.exteriorOrientationParameters[0:3] = np.dot(imgS.RotationMatrix,imgS.PerspectiveCenter)
     # draw image in world system
     imgS.drawSingleImage(squere,100,ax,'yes')
@@ -120,18 +122,14 @@ for i in range(len(azimuth)):
     plt.scatter(imagePoints_S[:, 0], imagePoints_S[:, 1])
 
 
-
-
-
-for imgS in images:
+for i,imgS in enumerate(images):
     imagePoints3 = imgS.GroundToImage(squere)
-    print('samples:', '\n', imagePoints3)
+    print('samples image: ', i, '\n', imagePoints3)
     print('Exterior Orientation before:', '\n', imgS.exteriorOrientationParameters)
     imgS.exteriorOrientationParameters, sigma0, sigmaX = imgS.ComputeExteriorOrientation(imagePoints3, squere,0.001)
     print('Exterior Orientation:', '\n', imgS.exteriorOrientationParameters)
     print("sigma X-diag:",'\n',np.diag(sigmaX))
     exterior_after.append(imgS.exteriorOrientationParameters)
-
 
 plt.show()
 
@@ -139,29 +137,5 @@ plt.show()
 
 
 
-# imgS2 = SingleImage(camera1,'synthetic')
-# imgS2.innerOrientationParameters = np.array([0,1,0,0,0,1])
-# azimuth = np.radians(90)
-# phi = np.radians(45)
-# kappa = np.radians(45)
-# Z = 100
-# imgS2.exteriorOrientationParameters = np.array([[0, 0, Z, azimuth, phi, kappa]])
-# imgS2.exteriorOrientationParameters[0:3] = np.dot(imgS2.RotationMatrix,imgS2.PerspectiveCenter)
-# print(imgS2.PerspectiveCenter)
-# fig = plt.figure()
-# ax = fig.add_subplot(111, projection='3d')
-# imgS1.drawSingleImage(squere,100,ax,'yes')
-# imgS2.drawSingleImage(squere,100,ax,'yes')
-# ax.scatter(squere[:,0],squere[:,1],squere[:,2], c='b', s=50,marker='^')
-#
-# imagePoints_S1 = imgS1.GroundToImage(squere)
-# imagePoints_S2 = imgS2.GroundToImage(squere)
-# plt.figure()
-# pv.drawImageFrame2D(imgS1.camera.sensorSize, imgS1.camera.sensorSize)
-# plt.scatter(imagePoints_S1[:, 0], imagePoints_S1[:, 1])
-# plt.figure()
-# pv.drawImageFrame2D(imgS2.camera.sensorSize, imgS2.camera.sensorSize)
-# plt.scatter(imagePoints_S2[:, 0], imagePoints_S2[:, 1])
-#
-# print('^^^^^^^','\n',imgS2.ComputeExteriorOrientation(imagePoints_S2,squere,0.001))
+
 
