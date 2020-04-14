@@ -160,7 +160,12 @@ class Camera(object):
         :rtype: tuple of np.array
 
         """
-        dx = (camera_points[:, 0] - self.principalPoint[0])*()
+        # dx = (camera_points[:, 0] - self.principalPoint[0])*()
+        r = np.sqrt((camera_points[:,0] - self.principalPoint[0])**2+
+                    (camera_points[:,1] - self.principalPoint[1])**2)
+
+
+
 
     def CorrectionToPrincipalPoint(self, camera_points):
         """
@@ -185,7 +190,30 @@ class Camera(object):
 
         """
 
-        pass  # Delete for implementation
+        corrected_camera_points = np.zeros([len(camera_points), 2])
+        corrected_camera_points[:, 0] = camera_points[:, 0] + self.principalPoint[0]
+        corrected_camera_points[:, 1] = camera_points[:, 1] + self.principalPoint[1]
+        return corrected_camera_points
+
+
+
+    def ShiftedPrincipalPoint(self, camera_points):
+        """
+        Points in camera space when principal point is shifted
+        :param camera_points: sampled image points
+        :param t: shifting from principal point
+
+        :type camera_points: np.array nx2
+        :type t: np.array 1X2
+
+        :return: shifted image points
+        """
+
+        shifted_camera_points = np.zeros([len(camera_points), 2])
+        shifted_camera_points[:, 0] = camera_points[:, 0] - self.principalPoint[0]
+        shifted_camera_points[:, 1] = camera_points[:, 1] - self.principalPoint[1]
+        return shifted_camera_points
+
 
 
 
@@ -201,3 +229,4 @@ if __name__ == '__main__':
 
     # define the initial values vector
     cam = Camera(f0, np.array([xp0, yp0]), np.array([K1, K2]),np.array([P1, P2]), None)
+
