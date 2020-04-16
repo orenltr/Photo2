@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d53e31d0-77da-41fe-b61e-41f36d3a8fa4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Photo2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Photo2.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Camera.py" beforeDir="false" afterPath="$PROJECT_DIR$/Camera.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lab3_CameraCalibratoin1.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Lab3_CameraCalibratoin1.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lab3_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/lab3_main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lab3_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="278">
-              <caret line="46" column="31" lean-forward="true" selection-start-line="46" selection-start-column="31" selection-end-line="46" selection-end-column="31" />
+            <state relative-caret-position="476">
+              <caret line="144" lean-forward="true" selection-start-line="144" selection-end-line="144" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -32,8 +29,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lab2_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="122" lean-forward="true" selection-start-line="119" selection-start-column="4" selection-end-line="122" />
+            <state relative-caret-position="2101">
+              <caret line="125" column="21" lean-forward="true" selection-start-line="125" selection-start-column="21" selection-end-line="125" selection-end-column="21" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -44,15 +41,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lab1_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-6038" />
+            <state relative-caret-position="360">
+              <caret line="244" column="26" selection-start-line="244" selection-start-column="20" selection-end-line="244" selection-end-column="26" />
+            </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Camera.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="185" column="17" lean-forward="true" selection-start-line="185" selection-start-column="17" selection-end-line="185" selection-end-column="17" />
+            <state relative-caret-position="161">
+              <caret line="106" selection-start-line="106" selection-end-line="106" />
             </state>
           </provider>
         </entry>
@@ -60,7 +59,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SingleImage.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="55">
+            <state relative-caret-position="13464">
               <caret line="797" column="8" selection-start-line="797" selection-start-column="8" selection-end-line="797" selection-end-column="8" />
             </state>
           </provider>
@@ -84,6 +83,7 @@
       <find>ImageToGround</find>
       <find>exteriorOrientation</find>
       <find>imgS</find>
+      <find>hst</find>
     </findStrings>
     <replaceStrings>
       <replace>imgS2</replace>
@@ -99,16 +99,16 @@
         <option value="$PROJECT_DIR$/MatrixMethods.py" />
         <option value="$PROJECT_DIR$/SingleImage.py" />
         <option value="$PROJECT_DIR$/lab2_main.py" />
-        <option value="$PROJECT_DIR$/lab3_main.py" />
         <option value="$PROJECT_DIR$/Camera.py" />
+        <option value="$PROJECT_DIR$/lab3_main.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1912" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
+    <option name="x" value="2649" />
+    <option name="y" value="242" />
+    <option name="width" value="922" />
+    <option name="height" value="494" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -249,19 +249,26 @@
       <option name="project" value="LOCAL" />
       <updated>1586159479654</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="starting lab3">
+      <created>1586867682311</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1586867682312</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14172813" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11275026" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.29685807" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3217768" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.42470205" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -338,7 +345,8 @@
     <MESSAGE value="some changes" />
     <MESSAGE value="new MatrixMethods" />
     <MESSAGE value="fix MatrixMethods" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix MatrixMethods" />
+    <MESSAGE value="starting lab3" />
+    <option name="LAST_COMMIT_MESSAGE" value="starting lab3" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
@@ -384,13 +392,6 @@
     <entry file="file://$PROJECT_DIR$/ObjectsSynthetic.py" />
     <entry file="file://$PROJECT_DIR$/lab2.ipynb" />
     <entry file="file://$PROJECT_DIR$/lab1.ipynb" />
-    <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/numpy/core/shape_base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="710">
-          <caret line="101" selection-start-line="101" selection-end-line="101" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/numpy/linalg/linalg.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="267">
@@ -398,24 +399,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/numpy/core/numeric.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
-          <caret line="491" selection-start-line="491" selection-end-line="491" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/numpy/core/fromnumeric.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="143">
           <caret line="256" selection-start-line="256" selection-end-line="256" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Anaconda3/Lib/codecs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="319" selection-start-line="319" selection-end-line="319" />
         </state>
       </provider>
     </entry>
@@ -428,42 +415,65 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lab1_main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-6038" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/SingleImage.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="55">
+        <state relative-caret-position="13464">
           <caret line="797" column="8" selection-start-line="797" selection-start-column="8" selection-end-line="797" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lab2_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="122" lean-forward="true" selection-start-line="119" selection-start-column="4" selection-end-line="122" />
+        <state relative-caret-position="2101">
+          <caret line="125" column="21" lean-forward="true" selection-start-line="125" selection-start-column="21" selection-end-line="125" selection-end-column="21" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lab3_main.py">
+    <entry file="file://$PROJECT_DIR$/lab1_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="46" column="31" lean-forward="true" selection-start-line="46" selection-start-column="31" selection-end-line="46" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="360">
+          <caret line="244" column="26" selection-start-line="244" selection-start-column="20" selection-end-line="244" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/numpy/core/numeric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="543" selection-start-line="543" selection-end-line="543" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/numpy/core/shape_base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="52" selection-start-line="52" selection-end-line="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Anaconda3/Lib/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="308" selection-start-line="308" selection-end-line="308" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Camera.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="185" column="17" lean-forward="true" selection-start-line="185" selection-start-column="17" selection-end-line="185" selection-end-column="17" />
+        <state relative-caret-position="161">
+          <caret line="106" selection-start-line="106" selection-end-line="106" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lab3_main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="144" lean-forward="true" selection-start-line="144" selection-end-line="144" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

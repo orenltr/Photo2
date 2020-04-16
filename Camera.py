@@ -93,6 +93,47 @@ class Camera(object):
 
         return self.__principal_point
 
+    @principalPoint.setter
+    def principalPoint(self, val):
+        """
+        Set the principal Point
+
+        :param val: value for setting
+
+        :type: np.ndarray
+
+        """
+
+        self.__principal_point = val
+
+    @property
+    def radial_distortions(self):
+        """
+        radial distortions params
+
+        :return: radial distortions params- k1, k2
+
+        :rtype: np.ndarray
+
+        """
+
+        return self.__radial_distortions
+
+    @radial_distortions.setter
+    def radial_distortions(self, val):
+        """
+        Set the radial distortions params
+
+        :param val: value for setting
+
+        :type: np.ndarray
+
+        """
+
+        self.__radial_distortions = val
+
+
+
     def CameraToIdealCamera(self, camera_points):
         """
         Transform camera coordinates to an ideal system.
@@ -155,14 +196,35 @@ class Camera(object):
 
         :type camera_points: np.array nx2
 
-        :return: radial distortions: delta_x, delta_y
+        :return: radial distortions: delta_x, delta_y , delta_r
 
-        :rtype: tuple of np.array
+        :rtype: np.array
 
         """
-        # dx = (camera_points[:, 0] - self.principalPoint[0])*()
-        r = np.sqrt((camera_points[:,0] - self.principalPoint[0])**2+
-                    (camera_points[:,1] - self.principalPoint[1])**2)
+        r = np.sqrt((camera_points[:, 0] - self.principalPoint[0])**2 +
+                    (camera_points[:, 1] - self.principalPoint[1])**2)
+        dx = (camera_points[:, 0] - self.principalPoint[0])*(self.radial_distortions[0]*r**2 + self.radial_distortions[1]*r**4)
+        dy = (camera_points[:, 1] - self.principalPoint[1])*(self.radial_distortions[0]*r**2 + self.radial_distortions[1]*r**4)
+        dr = np.sqrt(dx**2+dy**2)
+        return dx, dy, dr
+
+    def CorrectionToRadialDistortions(self, camera_points):
+        """
+        Correction to radial distortions for given points
+        :param camera_points: points in camera space
+        :type camera_points: np.array nx2
+        :return: correct points in camera space
+        :rtype: np.array
+        """
+        r = np.sqrt((camera_points[:, 0] - self.principalPoint[0])**2 +
+                    (camera_points[:, 1] - self.principalPoint[1])**2)
+        dx = (camera_points[:, 0] - self.principalPoint[0])*(self.radial_distortions[0]*r**2 + self.radial_distortions[1]*r**4)
+        dy = (camera_points[:, 1] - self.principalPoint[1])*(self.radial_distortions[0]*r**2 + self.radial_distortions[1]*r**4)
+        correct_camera_points = np.zeros([len(camera_points), 2])
+        correct_camera_points[:,0] = np.array([[camera_points[:, 0] + dx]])
+        correct_camera_points[:,1] = np.array([[camera_points[:, 1] + dy]])
+
+        return correct_camera_points
 
 
 
@@ -170,29 +232,19 @@ class Camera(object):
     def CorrectionToPrincipalPoint(self, camera_points):
         """
         Correction to principal point
-
         :param camera_points: sampled image points
-
         :type: np.array nx2
-
         :return: corrected image points
-
         :rtype: np.array nx2
-
         .. warning::
-
             This function is empty, need implementation
-
         .. note::
-
             The principal point is an attribute of the camera object, i.e., ``self.principalPoint``
-
-
         """
-
         corrected_camera_points = np.zeros([len(camera_points), 2])
-        corrected_camera_points[:, 0] = camera_points[:, 0] + self.principalPoint[0]
-        corrected_camera_points[:, 1] = camera_points[:, 1] + self.principalPoint[1]
+        corrected_camera_points[:, 0] = camera_points[:, 0] - self.principalPoint[0]
+        corrected_camera_points[:, 1] = camera_points[:, 1] - self.principalPoint[1]
+
         return corrected_camera_points
 
 
@@ -208,10 +260,10 @@ class Camera(object):
 
         :return: shifted image points
         """
-
         shifted_camera_points = np.zeros([len(camera_points), 2])
-        shifted_camera_points[:, 0] = camera_points[:, 0] - self.principalPoint[0]
-        shifted_camera_points[:, 1] = camera_points[:, 1] - self.principalPoint[1]
+        shifted_camera_points[:, 0] = camera_points[:, 0] + self.principalPoint[0]
+        shifted_camera_points[:, 1] = camera_points[:, 1] + self.principalPoint[1]
+
         return shifted_camera_points
 
 
