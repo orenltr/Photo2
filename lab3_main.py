@@ -13,17 +13,12 @@ if __name__ == '__main__':
     # part A
     # define camera
     focal_length = 35  # [mm]
-    sensor_size = 35  # [mm]
+    sensor_size = 24  # [mm]
     xp = 0.1  # [mm]
     yp = 0.2  # [mm]
-    # sensor_size = 35000  # [micron]
-    # xp=100  # [micron]
-    # yp=200  # [micron]
-
 
     camera1 = Camera(focal_length, np.array([xp, yp]),None, None, None, sensor_size)
     img1 = SingleImage(camera1)
-
     omega = 0
     phi = 0
     kappa = 0
@@ -66,9 +61,8 @@ if __name__ == '__main__':
     # plt.figure()
     # pv.drawImageFrame2D(img1.camera.sensorSize, img1.camera.sensorSize)
     # plt.scatter(imagePoints1[:, 0], imagePoints1[:, 1])
-    #
-    # plt.show()
 
+    #  Q6
     # calculate k1, k2
     # assume maximal radial distortions in the edges
     r = np.sqrt((camera1.sensorSize/2 - camera1.principalPoint[0]) ** 2 +
@@ -78,18 +72,15 @@ if __name__ == '__main__':
     k1 = (0.05-k2*r**5)/(r**3)
     print('k1=','\n',k1)
     print('k2=','\n',k2)
+    camera1.radial_distortions = np.array([k1, k2])
 
-    camera1.radial_distortions = np.array([k1,k2])
-
+    #  Q7
     # create array of points in camera space
     x = np.linspace(0, camera1.sensorSize/2, 20)
     y = np.linspace(0, camera1.sensorSize/2, 20)
-    X = np.zeros((len(x),2))
+    X = np.zeros((len(x), 2))
     X[:,0] = x
     X[:,1] = y
-    # X = np.array([[0,2,4,6,8,10,12,14,16,17.5],
-    #               [0,2,4,6,8,10,12,14,16,17.5]]).T
-
     # define the distances from the principal point
     r = np.sqrt((X[:, 0] - camera1.principalPoint[0]) ** 2 +
                 (X[:, 1] - camera1.principalPoint[1]) ** 2)
@@ -101,6 +92,7 @@ if __name__ == '__main__':
     plt.xlabel('r [mm]')
     plt.ylabel('delta_r [mm]')
 
+    #  Q8
     # # correction for principal point
     # corrected_points1 = camera1.CorrectionToPrincipalPoint(cameraPoints1)
     # print('corrected points for principal point=', '\n', corrected_points1)
@@ -109,36 +101,47 @@ if __name__ == '__main__':
     corrected_points2 = camera1.CorrectionToRadialDistortions(cameraPoints1)
     print('corrected points for radial distortion=', '\n', corrected_points2)
 
-    # create array of principal points
-    xp = np.linspace(0, 1, 10)
-    yp = np.linspace(0, 1, 10)
+    #  Q9
+    # create array of xp,yp
+    xp = np.linspace(-camera1.sensorSize/2, camera1.sensorSize/2, 30)
+    yp = np.linspace(-camera1.sensorSize/2, camera1.sensorSize/2, 30)
     principal_points = np.zeros((len(xp), 2))
     principal_points[:, 0] = xp
     principal_points[:, 1] = yp
+
     # check radial distortion for different xp,yp
-    check_point = np.array([[10,10]])
-    dr2 = np.zeros([len(xp)])
-    for i,p in enumerate(principal_points):
+    check_point = np.array([[0, 0]])
+    dr2 = np.zeros((len(xp)))
+    for i, p in enumerate(principal_points):
         camera1.principalPoint = p
-        dx,dy,dr2[i] = camera1.ComputeRadialDistortions(check_point)
+        dx, dy, dr2[i] = camera1.ComputeRadialDistortions(check_point)
     print(dr2)
 
     plt.figure()
-    plt.plot(principal_points, dr2, 'r-o')
-    # plt.title('Radial distortion depends on principal point ')
-    plt.xlabel('r [mm]')
+    plt.plot(xp, dr2, 'r-o')
+    plt.title('Radial distortion depends on principal point')
+    plt.xlabel('xp [mm]')
     plt.ylabel('delta_r [mm]')
-    plt.show()
 
-    # # plot the radial distortion
-    # X = np.arange(-10, 10, 1)
-    # Y = np.arange(-10, 10, 1)
-    # U, V = np.meshgrid(X, Y)
-    #
-    # fig, ax = plt.subplots()
-    # q = ax.quiver(X, Y, U, V)
-    # ax.quiverkey(q, X=0.3, Y=1.1, U=10,
-    #              label='Quiver key, length = 10', labelpos='E')
-    #
-    # plt.show()
+    # Q10
+    # plot the radial distortion
+    camera1.principalPoint = np.array([0.1, 0.2])
+
+    Xgrid = np.arange(-camera1.sensorSize/2, (camera1.sensorSize/2+1), 1)
+    Ygrid = np.arange(-camera1.sensorSize/2, (camera1.sensorSize/2+1), 1)
+    Xgrid, Ygrid = np.meshgrid(Xgrid, Ygrid)
+    DX = np.zeros((len(Xgrid), len(Xgrid)))
+    DY = np.zeros((len(Xgrid), len(Xgrid)))
+    for i in range(len(Xgrid[:, 0])):
+        for j in range(len(Xgrid[:, 0])):
+            DX[i, j],DY[i, j], DR = camera1.ComputeRadialDistortions(np.array([[Xgrid[i,j],Ygrid[i,j]]]))
+
+    plt.figure()
+    plt.quiver(Xgrid, Ygrid, DX, DY)
+    plt.title('Radial distortion')
+    plt.xlabel('x [mm]')
+    plt.ylabel('y [mm]')
+    plt.axis('equal')
+
+    plt.show()
 
