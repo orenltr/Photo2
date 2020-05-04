@@ -53,13 +53,13 @@ class SingleImage(object):
     def innerOrientationParameters(self, parametersArray):
         r"""
 
-        :param parametersArray: the parameters to update the ``self.__exteriorOrientationParameters``
+        :param parametersArray: the parameters to update the ``self.__innerOrientationParameters``
 
         **Usage example**
 
         .. code-block:: py
 
-            self.exteriorOrintationParameters = parametersArray
+            self.innerOrintationParameters = parametersArray
 
         """
         self.__innerOrientationParameters = {'a0': parametersArray[0], 'a1': parametersArray[1],
@@ -645,10 +645,14 @@ class SingleImage(object):
                       [1, 0, cameraPoints[1, 0], cameraPoints[1, 1]],
                       [0, 1, cameraPoints[1, 1], -1 * (cameraPoints[1, 0])]])
 
+        # b = np.array([[groundPoints[0, 0]],
+        #               [groundPoints[0, 1]],
+        #               [groundPoints[1, 0]],
+        #               [groundPoints[1, 1]]])
         b = np.array([[groundPoints[0, 0]],
                       [groundPoints[0, 1]],
-                      [groundPoints[1, 0]],
-                      [groundPoints[1, 1]]])
+                      [groundPoints[2, 0]],
+                      [groundPoints[2, 1]]])
         X = np.dot(np.linalg.inv(A), b)
         X0 = X[0]
         Y0 = X[1]
