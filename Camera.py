@@ -443,13 +443,12 @@ class Camera(object):
         # image.exteriorOrientationParameters = approx_vals[5:]
 
         lb = camera_points.flatten().T
-
+        X = approx_vals
         dx = np.ones([11, 1]) * 100000
         itr = 0
         # adjustment
         while np.linalg.norm(dx) > epsilon and itr < 100:
             itr += 1
-            X = approx_vals
             l0 = self.ComputeObservationVectorForCalibration(groundPoints, image).T
             L = lb - l0
             A = self.ComputeDesignMatrixForCalibration(groundPoints, image)
