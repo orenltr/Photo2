@@ -14,9 +14,12 @@ if __name__ == '__main__':
     sensor_size = 35  # [mm]
     xp = 0.02  # [mm]
     yp = 0.01  # [mm]
-    K1 = 5*1e-5  # [mm]
-    K2 = 5*1e-10  # [mm]
-    camera1 = Camera(focal_length, np.array([xp, yp]), np.array([K1, K2]), None, 'no fiducials', sensor_size)
+    k1_factor = 1e-5
+    k2_factor = 1e-10
+    k1 = 5*k1_factor
+    k2 = 5*k2_factor
+    camera1 = Camera(focal_length, np.array([xp, yp]), np.array([k1, k2]), None, None, sensor_size)
+
     img1 = SingleImage(camera1)
     omega = np.radians(90)
     phi = 0
@@ -61,8 +64,6 @@ if __name__ == '__main__':
     pv.drawImageFrame2D(img1.camera.sensorSize, img1.camera.sensorSize)
     plt.scatter(camera_points[:, 0], camera_points[:, 1])
 
-
-
     # Part B
     # calibration
     # Approximate values
@@ -80,9 +81,71 @@ if __name__ == '__main__':
     approx_vals = np.array([f, xp2, yp2, k1, k2, X0, Y0, Z0, omega2, phi2, kappa2]).T
 
     calibration_params, sigma0, sigmaX, itr = camera1.Calibration(camera_points, calibration_field, approx_vals, img1, 0.001)
-    print('calibration parameters','\n',calibration_params)
+    calibration_params[8:] = np.degrees(calibration_params[8:])
+    accuracy = np.diag(sigmaX)
     print('iteration','\n',itr)
-
-    MatrixMethods.PrintMatrix(np.diag(sigmaX),'Accuracy',10)
+    print('Accuracy norm','\n',np.linalg.norm(accuracy))
+    MatrixMethods.PrintMatrix(calibration_params, 'calibration parameters', 10)
+    MatrixMethods.PrintMatrix(accuracy,'Accuracy',10)
 
     plt.show()
+    # # flat Clibration field
+    #
+    # focal_length = 35  # [mm]
+    # sensor_size = 35  # [mm]
+    # xp = 0.02  # [mm]
+    # yp = 0.01  # [mm]
+    # k1_factor = 1e-5
+    # k2_factor = 1e-10
+    # k1 = 5
+    # k2 = 5
+    # camera2 = Camera(focal_length, np.array([xp, yp]), np.array([k1_factor * k1, k2_factor * k2]), None, None,
+    #                  sensor_size)
+    #
+    # img2 = SingleImage(camera2)
+    # omega = np.radians(90)
+    # phi = 0
+    # kappa = 0
+    # X1 = 0  # [m]
+    # Y1 = 0
+    # Z1 = 0
+    # img2.exteriorOrientationParameters = np.array([[X1, Y1, Z1, omega, phi, kappa]])
+    #
+    #
+    # calibration_field2 = np.array([[-1, 7, -2],
+    #                                [-1, 7, 2],
+    #                                [1, 7, 2],
+    #                                [1, 7, -2],
+    #                                [3, 7, -2],
+    #                                [3, 7, 3],
+    #                                [0, 7, 3],
+    #                                [-3, 7, 3],
+    #                                [-3, 7, -2],
+    #                                [0, 7, 0]])
+    #
+    # # draw
+    # fig = plt.figure()
+    # ax = fig.add_subplot(111, projection='3d')
+    # ax.scatter(calibration_field2[:, 0], calibration_field2[:, 1], calibration_field2[:, 2], c='g', s=50, marker='*')
+    #
+    # # points in camera space
+    # Ideal_camera_points2 = img2.GroundToImage(calibration_field2)  # synthetic system
+    # camera_points2 = camera2.IdealCameraToCamera(Ideal_camera_points2)
+    #
+    # print('Ideal camera Points=', '\n', Ideal_camera_points2)
+    # print('camera Points=', '\n', camera_points2)
+    #
+    # # drawing
+    # plt.figure()
+    # pv.drawImageFrame2D(img2.camera.sensorSize, img2.camera.sensorSize)
+    # plt.scatter(camera_points2[:, 0], camera_points2[:, 1])
+    #
+    # calibration_params, sigma0, sigmaX, itr = camera1.Calibration(camera_points2, calibration_field2, approx_vals, img2, 0.001)
+    # print('calibration parameters', '\n', calibration_params)
+    # print('iteration', '\n', itr)
+    #
+    # MatrixMethods.PrintMatrix(np.diag(sigmaX), 'Accuracy', 10)
+    #
+    #
+    # plt.show()
+

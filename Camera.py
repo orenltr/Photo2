@@ -467,19 +467,21 @@ class Camera(object):
     def Calibration(self,  camera_points, groundPoints, approx_vals, image,epsilon):
         """
         Compute the calibration parameters
-        :param imagePoints:
-        :param groundPoints:
-        :param approx_vals:
-        :param image:
-        :param epsilon:
-        :return:
+        :param camera_points: points in camera space
+        :param groundPoints: corresponding ground points
+        :param approx_vals: approximate values
+        :param image: SingleImage instance
+        :param epsilon: tolerance for the loop
+
+        :type camera_points: points in camera space
+        :type groundPoints:
+        :type approx_vals:
+        :type image: SingleImage instance
+        :type epsilon: float
+        :return: calibration parameters and accuracies
         """
-
-        # image = SingleImage.SingleImage(self)
-
         # compute control points in camera system using the inner orientation
         # camera_points = image.ImageToCamera(imagePoints)
-
         lb = camera_points.flatten().T
         X = approx_vals
         dx = np.ones([11, 1]) * 100000
@@ -499,12 +501,11 @@ class Camera(object):
             U = np.dot(A.T, L)
             dx = np.dot(np.linalg.inv(N), U)
             X = X + dx
-
+        # update  k1, k2
         X[3] = X[3]*1e-5
         X[4] = X[4]*1e-10
 
         v = A.dot(dx) - L
-
         # sigma posteriory
         u = 11
         r = len(L) - u
