@@ -12,17 +12,19 @@ if __name__ == '__main__':
     # Part A
     focal_length = 35  # [mm]
     sensor_size = 35  # [mm]
-    xp = 0.05  # [mm]
-    yp = 0.05  # [mm]
-    K1 = 0.5e-8  # [mm]
-    K2 = 0.5e-12  # [mm]
+    xp = 0.02  # [mm]
+    yp = 0.01  # [mm]
+    K1 = 5*1e-5  # [mm]
+    K2 = 5*1e-10  # [mm]
     camera1 = Camera(focal_length, np.array([xp, yp]), np.array([K1, K2]), None, 'no fiducials', sensor_size)
     img1 = SingleImage(camera1)
     omega = np.radians(90)
     phi = 0
     kappa = 0
-    Z = 0  # [m]
-    img1.exteriorOrientationParameters = np.array([[0, 0, Z, omega, phi, kappa]])
+    X1 = 0  # [m]
+    Y1 = 0
+    Z1 = 0
+    img1.exteriorOrientationParameters = np.array([[X1, Y1, Z1, omega, phi, kappa]])
 
     # Clibration field
     calibration_field = np.array([[-1, 5, -2],
@@ -36,20 +38,17 @@ if __name__ == '__main__':
                                   [-3, 7, -2],
                                   [0, 5, 0]])
 
-    # sampeling points in camera system
-    cameraPoints1 = img1.GroundToImage(calibration_field)
-    corrected_points1 = camera1.CorrectionToPrincipalPoint(cameraPoints1)
-    corrected_points2 = camera1.CorrectionToRadialDistortions(corrected_points1)
-    print('camera Points=', '\n', cameraPoints1)
-    print('correted points to Principal Point=', '\n', corrected_points1)
-    print('corrected points for radial distortion=', '\n', corrected_points2)
+    # sampeling points in synthetic system
+    # points in camera space
+    Ideal_camera_points = img1.GroundToImage(calibration_field)  # synthetic system
+    camera_points = camera1.IdealCameraToCamera(Ideal_camera_points)
 
-    #image points
-    img1.innerOrientationParameters = np.array([img1.camera.sensorSize/2,1,0,img1.camera.sensorSize/2,0,-1])
-    print('image Inner Orientation','\n',img1.innerOrientationParameters)
-    image_points1 = img1.CameraToImage(corrected_points2)
-    # image_points1 = img1.CameraToImage(cameraPoints1)
-    print('image points=', '\n', image_points1)
+    # points in image space
+    # img1.innerOrientationParameters = np.array([img1.camera.sensorSize / 2, 1, 0, img1.camera.sensorSize / 2, 0, -1])
+    # image_points1 = img1.CameraToImage(camera_points)
+
+    print('Ideal camera Points=', '\n', Ideal_camera_points)
+    print('camera Points=', '\n', camera_points)
 
     # draw
     fig = plt.figure()
@@ -60,7 +59,7 @@ if __name__ == '__main__':
 
     plt.figure()
     pv.drawImageFrame2D(img1.camera.sensorSize, img1.camera.sensorSize)
-    plt.scatter(corrected_points2[:, 0], corrected_points2[:, 1])
+    plt.scatter(camera_points[:, 0], camera_points[:, 1])
 
 
 
@@ -68,12 +67,10 @@ if __name__ == '__main__':
     # calibration
     # Approximate values
     f = 35  # [mm]
-    # xp2 = camera1.sensorSize / 2  # in image space [mm]
-    # yp2 = camera1.sensorSize / 2  # in image space [mm]
     xp2 = 0  # in camera space [mm]
     yp2 = 0  # in camera space [mm]
-    k1 = 0
-    k2 = 0
+    k1 = 0.
+    k2 = 0.
     X0 = 0
     Y0 = 0
     Z0 = 0
@@ -82,18 +79,10 @@ if __name__ == '__main__':
     kappa2 = 0
     approx_vals = np.array([f, xp2, yp2, k1, k2, X0, Y0, Z0, omega2, phi2, kappa2]).T
 
-    # l0 = camera1.ComputeObservationVectorForCalibration(calibration_field,img1)
-    # print(l0)
-
-
-    # # check ExteriorOrientation
-    # img1.ComputeExteriorOrientation(image_points1, calibration_field, 0.001)
-
-    calibration_params, sigma0, sigmaX, itr = camera1.Calibration(image_points1, calibration_field, approx_vals, img1, 0.001)
+    calibration_params, sigma0, sigmaX, itr = camera1.Calibration(camera_points, calibration_field, approx_vals, img1, 0.001)
     print('calibration parameters','\n',calibration_params)
     print('iteration','\n',itr)
-    # print('sigma0','\n',sigma0)
-    # print('sigmaX','\n',sigmaX)
 
+    MatrixMethods.PrintMatrix(np.diag(sigmaX),'Accuracy',10)
 
     plt.show()

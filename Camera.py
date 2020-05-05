@@ -155,7 +155,10 @@ class Camera(object):
 
             This function is empty, need implementation
         """
-        pass  # delete for implementation
+        camera_points = self.CorrectionToPrincipalPoint(camera_points)
+        camera_points = self.CorrectionToRadialDistortions(camera_points)
+        return camera_points
+
 
     def IdealCameraToCamera(self, camera_points):
         r"""
@@ -173,7 +176,10 @@ class Camera(object):
 
             This function is empty, need implementation
         """
-        pass  # delete for implementation
+        camera_points = self.ShiftedPrincipalPoint(camera_points)
+        camera_points = self.add_RadialDistortions(camera_points)
+        return camera_points
+
 
     def ComputeDecenteringDistortions(self, camera_points):
         """
@@ -231,7 +237,24 @@ class Camera(object):
 
         return correct_camera_points
 
+    def add_RadialDistortions(self,camera_points):
+        """
+        Add radial distortions for given points in synthetic system
+         :param camera_points: points in camera space
+        :type camera_points: np.array nx2
+        :return: points with radial distortions in camera space
+        :rtype: np.array
+        """
+        r = np.sqrt((camera_points[:, 0] - self.principalPoint[0]) ** 2 +
+                    (camera_points[:, 1] - self.principalPoint[1]) ** 2)
+        dx = (camera_points[:, 0] - self.principalPoint[0]) * (
+                    self.radial_distortions[0] * r ** 2 + self.radial_distortions[1] * r ** 4)
+        dy = (camera_points[:, 1] - self.principalPoint[1]) * (
+                    self.radial_distortions[0] * r ** 2 + self.radial_distortions[1] * r ** 4)
 
+        camera_points[:, 0] -= dx
+        camera_points[:, 1] -= dy
+        return camera_points
 
 
     def CorrectionToPrincipalPoint(self, camera_points):
@@ -256,7 +279,7 @@ class Camera(object):
 
     def ShiftedPrincipalPoint(self, camera_points):
         """
-        Points in camera space when principal point is shifted
+        Points in camera space when principal point is shifted- use in synthetic system
         :param camera_points: sampled image points
         :param t: shifting from principal point
 
@@ -271,10 +294,9 @@ class Camera(object):
 
         return shifted_camera_points
 
-    def ComputeObservationVectorForCalibration(self, groundPoints, image):
+    def ComputeObservationVectorForCalibration(self, groundPoints, camera_points, image):
         """
-        Compute observation vector for solving the exterior orientation parameters of a single image
-        based on their approximate values
+        Compute observation vector for solving the camera calibration
 
         :param groundPoints: Ground coordinates of the control points
 
@@ -287,7 +309,7 @@ class Camera(object):
         # create an instance of SingleImage
         # image = SingleImage(self)
         # the points in camera space
-        camera_points = image.GroundToImage(groundPoints)
+        # camera_points = image.GroundToImage(groundPoints)
 
         n = groundPoints.shape[0]  # number of points
 
@@ -301,19 +323,27 @@ class Camera(object):
         r = np.sqrt((camera_points[:, 0] - self.principalPoint[0]) ** 2 +
                     (camera_points[:, 1] - self.principalPoint[1]) ** 2)
         dx = (camera_points[:, 0] - self.principalPoint[0]) *\
-             (1e-6*self.radial_distortions[0]*r**2 + 1e-10*self.radial_distortions[1]*r**4)
+             (1e-5*self.radial_distortions[0]*r**2 + 1e-10*self.radial_distortions[1]*r**4)
         dy = (camera_points[:, 1] - self.principalPoint[1]) *\
-             (1e-6*self.radial_distortions[0]*r**2 + 1e-10*self.radial_distortions[1]*r**4)
+             (1e-5*self.radial_distortions[0]*r**2 + 1e-10*self.radial_distortions[1]*r**4)
+
+        # dx = (camera_points[:, 0] - self.principalPoint[0]) * \
+        #      (self.radial_distortions[0] * r ** 2 + self.radial_distortions[1] * r ** 4)
+        # dy = (camera_points[:, 1] - self.principalPoint[1]) * \
+        #      (self.radial_distortions[0] * r ** 2 + self.radial_distortions[1] * r ** 4)
 
         l0 = np.empty(n * 2)
 
         # Computation of the observation vector based on approximate exterior orientation parameters:
-        l0[::2] = self.principalPoint[0] - self.focalLength * rotated_XYZ[:, 0] / rotated_XYZ[:, 2]-dx
-        l0[1::2] =self.principalPoint[1] - self.focalLength * rotated_XYZ[:, 1] / rotated_XYZ[:, 2]-dy
+        l0[::2] = self.principalPoint[0] - self.focalLength * (rotated_XYZ[:, 0] / rotated_XYZ[:, 2])-dx
+        l0[1::2] = self.principalPoint[1] - self.focalLength * (rotated_XYZ[:, 1] / rotated_XYZ[:, 2])-dy
+
+        # l0[::2] = -self.focalLength * (rotated_XYZ[:, 0] / rotated_XYZ[:, 2])
+        # l0[1::2] = -self.focalLength * (rotated_XYZ[:, 1] / rotated_XYZ[:, 2])
 
         return l0
 
-    def ComputeDesignMatrixForCalibration(self, groundPoints, image):
+    def ComputeDesignMatrixForCalibration(self, groundPoints, camera_points,image):
         """
             Compute the derivatives of the collinear law (design matrix)
 
@@ -407,16 +437,21 @@ class Camera(object):
         dxdyp = np.zeros(len(groundPoints[:,0]))
         dydyp = np.ones(len(groundPoints[:,0]))
 
-
-        camera_points = image.GroundToImage(groundPoints)
+        # camera_points = image.GroundToImage(groundPoints)
         r = np.sqrt((camera_points[:, 0] - self.principalPoint[0]) ** 2 +
                     (camera_points[:, 1] - self.principalPoint[1]) ** 2)
 
-        dxdk1 = (-1e-6)*(camera_points[:, 0] - self.principalPoint[0])*r**2
+        dxdk1 = (-1e-5)*(camera_points[:, 0] - self.principalPoint[0])*r**2
         dxdk2 = (-1e-10)*(camera_points[:, 0] - self.principalPoint[0])*r**4
 
-        dydk1 = (-1e-6)*(camera_points[:, 1] - self.principalPoint[1])*r**2
+        dydk1 = (-1e-5)*(camera_points[:, 1] - self.principalPoint[1])*r**2
         dydk2 = (-1e-10)*(camera_points[:, 1] - self.principalPoint[1])*r**4
+
+        # dxdk1 = (camera_points[:, 0] - self.principalPoint[0]) * r ** 2
+        # dxdk2 = (camera_points[:, 0] - self.principalPoint[0]) * r ** 4
+        #
+        # dydk1 = (camera_points[:, 1] - self.principalPoint[1]) * r ** 2
+        # dydk2 = (camera_points[:, 1] - self.principalPoint[1]) * r ** 4
 
         # all derivatives of x and y
         dd = np.array([np.vstack([dxdf, dxdxp, dxdyp, dxdk1, dxdk2, dxdX0, dxdY0, dxdZ0, dxdOmega, dxdPhi, dxdKappa]).T,
@@ -429,18 +464,21 @@ class Camera(object):
         return a
 
 
-    def Calibration(self,  imagePoints, groundPoints, approx_vals, image,epsilon):
+    def Calibration(self,  camera_points, groundPoints, approx_vals, image,epsilon):
+        """
+        Compute the calibration parameters
+        :param imagePoints:
+        :param groundPoints:
+        :param approx_vals:
+        :param image:
+        :param epsilon:
+        :return:
+        """
 
         # image = SingleImage.SingleImage(self)
 
         # compute control points in camera system using the inner orientation
-        camera_points = image.ImageToCamera(imagePoints)
-
-        # # update parameters according to approximate values
-        # self.focalLength = approx_vals[0]
-        # self.principalPoint = np.array([approx_vals[1], approx_vals[2]])
-        # self.radial_distortions = np.array([approx_vals[3], approx_vals[4]])
-        # image.exteriorOrientationParameters = approx_vals[5:]
+        # camera_points = image.ImageToCamera(imagePoints)
 
         lb = camera_points.flatten().T
         X = approx_vals
@@ -449,17 +487,21 @@ class Camera(object):
         # adjustment
         while np.linalg.norm(dx) > epsilon and itr < 100:
             itr += 1
-            l0 = self.ComputeObservationVectorForCalibration(groundPoints, image).T
+            # update parameters according to approximate values
+            self.focalLength = X[0]
+            self.principalPoint = np.array([X[1], X[2]])
+            self.radial_distortions = np.array([X[3], X[4]])
+            image.exteriorOrientationParameters = X[5:]
+            l0 = self.ComputeObservationVectorForCalibration(groundPoints, camera_points ,image).T
             L = lb - l0
-            A = self.ComputeDesignMatrixForCalibration(groundPoints, image)
+            A = self.ComputeDesignMatrixForCalibration(groundPoints, camera_points, image)
             N = np.dot(A.T, A)
             U = np.dot(A.T, L)
             dx = np.dot(np.linalg.inv(N), U)
             X = X + dx
-            image.exteriorOrientationParameters = X[5:].T
 
-        X[3] = X[3]*1e6
-        X[4] = X[4]*1e10
+        X[3] = X[3]*1e-5
+        X[4] = X[4]*1e-10
 
         v = A.dot(dx) - L
 
