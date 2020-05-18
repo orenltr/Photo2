@@ -137,6 +137,12 @@ class Camera(object):
 
         self.__radial_distortions = val
 
+    @property
+    def CalibrationMatrix(self):
+
+        return np.array([[self.focalLength, 0, self.principalPoint[0]],
+                         [0,self.focalLength,self.principalPoint[1]],
+                         [0,0,1]])
 
 
     def CameraToIdealCamera(self, camera_points):

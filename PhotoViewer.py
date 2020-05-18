@@ -3,7 +3,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 from MatrixMethods import Compute3DRotationMatrix
 import ObjectsSynthetic as obj
-import ImagePair
+# import ImagePair
 
 
 def drawRays(listOfPoints, x0,ax):

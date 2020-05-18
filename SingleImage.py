@@ -4,6 +4,7 @@ from Camera import Camera
 from MatrixMethods import *
 import PhotoViewer as pv
 import matplotlib as plt
+from scipy.linalg import rq,inv
 
 
 class SingleImage(object):
@@ -28,6 +29,7 @@ class SingleImage(object):
         self.__exteriorOrientationParameters = np.array([[0, 0, 0, 0, 0, 0]], 'f').T
         # self.__exteriorOrientationParameters = np.array([0, 0, 0, 0, 0, 0], 'f')
         self.__rotationMatrix = None
+        # self.__perspectiveMatrix = None
 
     @property
     def innerOrientationParameters(self):
@@ -137,6 +139,13 @@ class SingleImage(object):
         return R
 
     @property
+    def PerspectiveMatrix(self):
+        ic = np.hstack((np.eye(3), -self.PerspectiveCenter))
+        return np.dot(np.dot(self.camera.CalibrationMatrix,self.RotationMatrix),ic)
+
+
+
+    @property
     def isSolved(self):
         """
         True if the exterior orientation is solved
@@ -158,6 +167,9 @@ class SingleImage(object):
         """
         return self.exteriorOrientationParameters[0:3]
 
+    @PerspectiveCenter.setter
+    def PerspectiveCenter(self,val):
+        self.exteriorOrientationParameters[0:3] = val[:,np.newaxis]
     # @exteriorOrientationParameters.setter
     # def PerspectiveCenter(self,x,y,z):
     #     """
@@ -407,9 +419,9 @@ class SingleImage(object):
         camPoints = np.zeros((len(imagePoints[:, 0]), 2))
         for i in range(len(imagePoints[:, 0])):
             camPoints[i, 0] = inv_param['a1*'] * (imagePoints[i, 0] + inv_param['a0*']) + inv_param['a2*'] * (
-                        imagePoints[i, 1] + inv_param['b0*'])
+                    imagePoints[i, 1] + inv_param['b0*'])
             camPoints[i, 1] = inv_param['b1*'] * (imagePoints[i, 0] + inv_param['a0*']) + inv_param['b2*'] * (
-                        imagePoints[i, 1] + inv_param['b0*'])
+                    imagePoints[i, 1] + inv_param['b0*'])
 
         return camPoints
 
@@ -491,6 +503,25 @@ class SingleImage(object):
             sigmaX = None
 
         return self.exteriorOrientationParameters, sigma0, sigmaX
+
+    def DLT(self, imagePoints, groundPoints):
+        """ compute exterior and inner orientation using direct linear transformations"""
+
+        # change to homogeneous representation
+        groundPoints = np.hstack((groundPoints, np.ones((len(groundPoints), 1))))
+        imagePoints = np.hstack((imagePoints, np.ones((len(imagePoints), 1))))
+        # compute design martix
+        a = self.ComputeDLTDesignMatrix(imagePoints, groundPoints)
+        # compute eigenvalues and eigenvectors
+        w, v = np.linalg.eig(np.dot(a.T, a))
+        # the solution is the eigenvector of the minimal eigenvalue
+        p = v[np.argmin(w), :]
+        p = np.reshape(p, (3, 4))
+        k, r = rq(p[:3, :3])
+        k = k/k[2,2]
+        self.PerspectiveCenter = -np.dot(inv(p[:3,:3]),p[:,3])
+        self.camera.principalPoint = k[:2, 2]
+        self.camera.focalLength = k[0,0]
 
     def GroundToImage(self, groundPoints):
         """
@@ -797,6 +828,32 @@ class SingleImage(object):
         a[0::2] = dd[0]
         a[1::2] = dd[1]
 
+        return a
+
+    def ComputeDLTDesignMatrix(self, imagePoints, groundPoints):
+        """
+        Compute the design matrix for the DLT method
+
+            :param groundPoints: homogeneous Ground coordinates of the control points
+            :param imagePoints: homogeneous image coordinates of the control points
+
+            :type groundPoints: np.array nx4 (homogeneous coordinates)
+            :type imagePoints: np.array nx3 (homogeneous coordinates)
+
+            :return: The design matrix
+
+            :rtype: np.array 2nx12
+        """
+        n = groundPoints.shape[0]  # number of points
+        a = np.zeros((2 * n, 12))
+        rows1 = np.array(
+            np.hstack((np.zeros((n, 4)), -imagePoints[:, 2, np.newaxis] * groundPoints,
+                       imagePoints[:, 1, np.newaxis] * groundPoints)))
+        rows2 = np.array(
+            np.hstack((imagePoints[:, 2, np.newaxis] * groundPoints, np.zeros((n, 4)),
+                       -imagePoints[:, 0, np.newaxis] * groundPoints)))
+        a[0::2] = rows1
+        a[1::2] = rows2
         return a
 
     def drawSingleImage(self, modelPoints, scale, ax, rays='no', ):
