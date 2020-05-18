@@ -140,8 +140,8 @@ class Camera(object):
     @property
     def CalibrationMatrix(self):
 
-        return np.array([[self.focalLength, 0, self.principalPoint[0]],
-                         [0,self.focalLength,self.principalPoint[1]],
+        return np.array([[-self.focalLength, 0, self.principalPoint[0]],
+                         [0,-self.focalLength,self.principalPoint[1]],
                          [0,0,1]])
 
 
@@ -161,6 +161,7 @@ class Camera(object):
 
             This function is empty, need implementation
         """
+        # if camera_points.shape[1] ==
         camera_points = self.CorrectionToPrincipalPoint(camera_points)
         camera_points = self.CorrectionToRadialDistortions(camera_points)
         return camera_points
@@ -469,7 +470,6 @@ class Camera(object):
 
         return a
 
-
     def Calibration(self,  camera_points, groundPoints, approx_vals, image,epsilon):
         """
         Compute the calibration parameters
@@ -523,6 +523,16 @@ class Camera(object):
             sigmaX = None
 
         return X, sigma0, sigmaX, itr
+
+    def cameraToIdealCameraByMatrix(self, cameraPoints):
+        """
+        transform points from camera system to ideal camera using calibration matrix
+        :type cameraPoints: np.array nX2 (x,y)
+        :return: idealCameraPoints nX3
+        """
+        cameraPoints = np.hstack([cameraPoints, np.ones((len(cameraPoints), 1))])
+        return np.dot(self.CalibrationMatrix,cameraPoints.T).T
+
 
 
 if __name__ == '__main__':

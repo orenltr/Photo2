@@ -5,7 +5,7 @@ from MatrixMethods import *
 import PhotoViewer as pv
 import matplotlib as plt
 from scipy.linalg import rq,inv
-
+from scipy.spatial.transform import Rotation as R
 
 class SingleImage(object):
 
@@ -27,9 +27,7 @@ class SingleImage(object):
         self.__innerOrientationParameters = None
         self.__isSolved = False
         self.__exteriorOrientationParameters = np.array([[0, 0, 0, 0, 0, 0]], 'f').T
-        # self.__exteriorOrientationParameters = np.array([0, 0, 0, 0, 0, 0], 'f')
         self.__rotationMatrix = None
-        # self.__perspectiveMatrix = None
 
     @property
     def innerOrientationParameters(self):
@@ -128,6 +126,8 @@ class SingleImage(object):
 
         :rtype: np.ndarray (3x3)
         """
+        if self.__rotationMatrix is not None:
+            return self.__rotationMatrix
         if self.type == 'real':
             R = Compute3DRotationMatrix(self.exteriorOrientationParameters[3], self.exteriorOrientationParameters[4],
                                         self.exteriorOrientationParameters[5])
@@ -138,12 +138,14 @@ class SingleImage(object):
 
         return R
 
+    @RotationMatrix.setter
+    def RotationMatrix(self,val):
+        self.__rotationMatrix = val
+
     @property
     def PerspectiveMatrix(self):
         ic = np.hstack((np.eye(3), -self.PerspectiveCenter))
-        return np.dot(np.dot(-self.camera.CalibrationMatrix,self.RotationMatrix),ic)
-
-
+        return np.dot(np.dot(self.camera.CalibrationMatrix,self.RotationMatrix),ic)
 
     @property
     def isSolved(self):
@@ -500,16 +502,19 @@ class SingleImage(object):
         # change to homogeneous representation
         groundPoints = np.hstack((groundPoints, np.ones((len(groundPoints), 1))))
         imagePoints = np.hstack((imagePoints, np.ones((len(imagePoints), 1))))
-        # compute design martix
+        # compute design matrix
         a = self.ComputeDLTDesignMatrix(imagePoints, groundPoints)
         # compute eigenvalues and eigenvectors
         w, v = np.linalg.eig(np.dot(a.T, a))
         # the solution is the eigenvector of the minimal eigenvalue
-        p = v[np.argmin(w), :]
+        p = v[:, np.argmin(w)]
         p = np.reshape(p, (3, 4))
         k, r = rq(p[:3, :3])
         k = k/k[2,2]
+        self.RotationMatrix = r
+        # (R.from_matrix(r)).as_euler()
         self.PerspectiveCenter = -np.dot(inv(p[:3,:3]),p[:,3])
+
         self.camera.principalPoint = k[:2, 2]
         self.camera.focalLength = k[0,0]
 
