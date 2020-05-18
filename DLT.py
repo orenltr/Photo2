@@ -30,6 +30,6 @@ if __name__ == '__main__':
     p1 = img1.PerspectiveMatrix
     imagePoints = np.dot(p1,cube.T).T
     imagePoints = imagePoints/imagePoints[:,2,np.newaxis]
-    p2 = img1.DLT(imagePoints[:, :2],cube[:,:3])
+    img1.DLT(imagePoints[:, :2],cube[:,:3])
     k = img1.CalibrationMatrix
     img1.ComputeDLTDesignMatrix(imagePoints1, cube)

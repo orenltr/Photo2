@@ -141,7 +141,7 @@ class SingleImage(object):
     @property
     def PerspectiveMatrix(self):
         ic = np.hstack((np.eye(3), -self.PerspectiveCenter))
-        return np.dot(np.dot(self.camera.CalibrationMatrix,self.RotationMatrix),ic)
+        return np.dot(np.dot(-self.camera.CalibrationMatrix,self.RotationMatrix),ic)
 
 
 
@@ -170,16 +170,6 @@ class SingleImage(object):
     @PerspectiveCenter.setter
     def PerspectiveCenter(self,val):
         self.exteriorOrientationParameters[0:3] = val[:,np.newaxis]
-    # @exteriorOrientationParameters.setter
-    # def PerspectiveCenter(self,x,y,z):
-    #     """
-    #     return the perspective center of the first image
-    #
-    #     :return: perspective center
-    #
-    #     :rtype: np.array (3, )
-    #     """
-    #     self.__exteriorOrientationParameters[0:3] = np.array([x,y,z])
 
     def ComputeInnerOrientation(self, imagePoints):
         r"""
