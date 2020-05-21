@@ -145,7 +145,7 @@ class SingleImage(object):
     @property
     def PerspectiveMatrix(self):
         ic = np.hstack((np.eye(3), -self.PerspectiveCenter))
-        return np.dot(np.dot(self.camera.CalibrationMatrix,self.RotationMatrix),ic)
+        return np.dot(np.dot(self.camera.CalibrationMatrix,self.RotationMatrix.T),ic)
 
     @property
     def isSolved(self):
@@ -502,21 +502,30 @@ class SingleImage(object):
         # change to homogeneous representation
         groundPoints = np.hstack((groundPoints, np.ones((len(groundPoints), 1))))
         imagePoints = np.hstack((imagePoints, np.ones((len(imagePoints), 1))))
+
         # compute design matrix
         a = self.ComputeDLTDesignMatrix(imagePoints, groundPoints)
+
         # compute eigenvalues and eigenvectors
         w, v = np.linalg.eig(np.dot(a.T, a))
+
         # the solution is the eigenvector of the minimal eigenvalue
         p = v[:, np.argmin(w)]
         p = np.reshape(p, (3, 4))
         k, r = rq(p[:3, :3])
-        k = k/k[2,2]
-        self.RotationMatrix = r
-        # (R.from_matrix(r)).as_euler()
-        self.PerspectiveCenter = -np.dot(inv(p[:3,:3]),p[:,3])
+        k = k/np.abs(k[2,2])  # normalize
 
+        # handle signs
+        signMat = findSignMat(k)
+        k = np.dot(k, signMat)
+        r = np.dot(np.linalg.inv(signMat), r)
+
+        # update orientation
+        self.RotationMatrix = r.T
+        self.PerspectiveCenter = -np.dot(inv(p[:3,:3]),p[:,3])
+        # update calibration
         self.camera.principalPoint = k[:2, 2]
-        self.camera.focalLength = k[0,0]
+        self.camera.focalLength = -k[0,0]
 
     def GroundToImage(self, groundPoints):
         """

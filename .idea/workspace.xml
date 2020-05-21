@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d53e31d0-77da-41fe-b61e-41f36d3a8fa4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Camera.py" beforeDir="false" afterPath="$PROJECT_DIR$/Camera.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DLT.py" beforeDir="false" afterPath="$PROJECT_DIR$/DLT.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatrixMethods.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatrixMethods.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SingleImage.py" beforeDir="false" afterPath="$PROJECT_DIR$/SingleImage.py" afterDir="false" />
@@ -19,7 +18,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lab3_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1513">
+            <state relative-caret-position="1407">
               <caret line="96" column="12" selection-start-line="96" selection-start-column="12" selection-end-line="96" selection-end-column="12" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
@@ -28,11 +27,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Camera.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
-              <caret line="533" column="62" selection-start-line="533" selection-start-column="62" selection-end-line="533" selection-end-column="62" />
+            <state relative-caret-position="1076">
+              <caret line="140" column="8" selection-start-line="140" selection-start-column="8" selection-end-line="140" selection-end-column="8" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
                 <element signature="e#1305#1445#0" />
@@ -54,10 +53,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MatrixMethods.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8109">
-              <caret line="477" selection-start-line="477" selection-end-line="477" />
+            <state relative-caret-position="384">
+              <caret line="69" selection-start-line="69" selection-end-line="69" />
               <folding>
-                <element signature="e#0#119#0" expanded="true" />
+                <element signature="e#0#125#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -66,8 +65,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lab1_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="26" selection-start-line="26" selection-end-line="26" selection-end-column="24" />
+            <state relative-caret-position="-1860">
+              <caret line="279" column="50" lean-forward="true" selection-start-line="279" selection-start-column="50" selection-end-line="279" selection-end-column="50" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
               </folding>
@@ -78,8 +77,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lab2_main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="39" selection-start-line="39" selection-end-line="42" selection-end-column="112" />
+            <state relative-caret-position="-1326">
+              <caret line="27" selection-start-line="27" selection-end-line="27" selection-end-column="57" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -90,30 +89,16 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SingleImage.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="125" lean-forward="true" selection-start-line="125" selection-end-line="125" />
+            <state relative-caret-position="170">
+              <caret line="488" column="18" selection-start-line="488" selection-start-column="12" selection-end-line="488" selection-end-column="18" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
-                <element signature="e#4032#4168#0" />
+                <element signature="e#937#1328#0" />
+                <element signature="e#1436#2006#0" />
+                <element signature="e#4218#4371#0" />
+                <element signature="e#4428#4624#0" />
                 <element signature="e#4701#4760#0" />
-                <element signature="e#4822#8260#0" />
-                <element signature="e#8312#9394#0" />
-                <element signature="e#9450#10263#0" />
                 <element signature="e#10316#11878#0" />
-                <element signature="e#11930#13638#0" />
-                <element signature="e#13726#16414#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DLT.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="4" lean-forward="true" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="77" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -124,6 +109,18 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="187">
               <caret line="11" column="35" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/DLT.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="211">
+              <caret line="93" column="30" lean-forward="true" selection-start-line="93" selection-start-column="30" selection-end-line="93" selection-end-column="30" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -154,10 +151,14 @@
       <find>corrected_points2</find>
       <find>squere</find>
       <find>qube</find>
-      <find>cube</find>
       <find>__sensorSize</find>
       <find>sensorSize</find>
+      <find>cube</find>
+      <find>img1</find>
+      <find>test</find>
       <find>per</find>
+      <find>noise</find>
+      <find>inner</find>
     </findStrings>
     <replaceStrings>
       <replace>imgS2</replace>
@@ -166,6 +167,9 @@
       <replace>camera_points</replace>
       <replace>cube</replace>
       <replace>squere</replace>
+      <replace>groundPoints</replace>
+      <replace>test1</replace>
+      <replace>img</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -182,17 +186,17 @@
         <option value="$PROJECT_DIR$/lab4_main.py" />
         <option value="$PROJECT_DIR$/PhotoViewer.py" />
         <option value="$PROJECT_DIR$/ObjectsSynthetic.py" />
+        <option value="$PROJECT_DIR$/Camera.py" />
         <option value="$PROJECT_DIR$/MatrixMethods.py" />
         <option value="$PROJECT_DIR$/SingleImage.py" />
         <option value="$PROJECT_DIR$/DLT.py" />
-        <option value="$PROJECT_DIR$/Camera.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-7" />
-    <option name="width" value="707" />
-    <option name="height" value="735" />
+    <option name="x" value="-11" />
+    <option name="width" value="1061" />
+    <option name="height" value="1103" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -419,20 +423,27 @@
       <option name="project" value="LOCAL" />
       <updated>1589813987187</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="DLT works&#10;test&#10;cameraToIdealCameraByMatrix">
+      <created>1589826610989</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1589826610989</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
+    <frame x="-7" y="-7" width="1295" height="735" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17860906" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.024642289" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.22637591" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.43613708" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.17578773" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.20563847" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -513,30 +524,51 @@
     <MESSAGE value="lab4_update" />
     <MESSAGE value="lab4_update2" />
     <MESSAGE value="DLT" />
-    <option name="LAST_COMMIT_MESSAGE" value="DLT" />
+    <MESSAGE value="DLT works&#10;test&#10;cameraToIdealCameraByMatrix" />
+    <option name="LAST_COMMIT_MESSAGE" value="DLT works&#10;test&#10;cameraToIdealCameraByMatrix" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/SingleImage.py</url>
-          <line>755</line>
-          <option name="timeStamp" value="6" />
+          <url>file://$PROJECT_DIR$/DLT.py</url>
+          <line>51</line>
+          <option name="timeStamp" value="54" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/DLT.py</url>
+          <line>48</line>
+          <option name="timeStamp" value="56" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/DLT.py</url>
+          <line>45</line>
+          <option name="timeStamp" value="57" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/DLT.py</url>
+          <line>101</line>
+          <option name="timeStamp" value="58" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/DLT.py</url>
+          <line>94</line>
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/DLT.py</url>
+          <line>74</line>
+          <option name="timeStamp" value="64" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/SingleImage.py</url>
-          <line>515</line>
-          <option name="timeStamp" value="30" />
+          <line>496</line>
+          <option name="timeStamp" value="65" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/SingleImage.py</url>
-          <line>851</line>
-          <option name="timeStamp" value="34" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/SingleImage.py</url>
-          <line>841</line>
-          <option name="timeStamp" value="36" />
+          <line>482</line>
+          <option name="timeStamp" value="66" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -545,11 +577,19 @@
         <watch expression="ic" />
         <watch expression="self.RotationMatrix" />
         <watch expression="self.camera.CalibrationMatrix" language="Python" />
+        <watch expression="self.exteriorOrientationParameters" />
+        <watch expression="np.linalg.norm(dx)" />
       </configuration>
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>len(L) - u
+        if r != 0:</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>np.array(
             np.hstack((np.zeros((n, 4)), -imagePoints[:, 2] * groundPoints, imagePoints[:, 1] * groundPoints)))</expression-string>
@@ -617,47 +657,47 @@
     </expressions>
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>euler_angles_from_rotation_matrix(r)</expression-string>
+        <expression-string>len(L)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>np.rad2deg(euler_angles_from_rotation_matrix(r))</expression-string>
+        <expression-string>imagePoints / imagePoints[:, 2, np.newaxis]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>np.rad2deg(euler_angles_from_rotation_matrix(r)[0])</expression-string>
+        <expression-string>np.radians(azimuth)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>np.degrees(euler_angles_from_rotation_matrix(r))</expression-string>
+        <expression-string>np.radians(phi)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>-np.dot(inv(p[:3,:3]),p[:,3])</expression-string>
+        <expression-string>np.radians(kappa)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>-imagePoints[:, 2, np.newaxis] * groundPoints</expression-string>
+        <expression-string>img.ComputeExteriorOrientation(imagePoints[:, :2], groundPoints[:, :3],0.0001)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>np.argmin(w)</expression-string>
+        <expression-string>realPercpectiveCenter-img.PerspectiveCenter[:,np.newaxis]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>imagePoints[:, :2]</expression-string>
+        <expression-string>realPercpectiveCenter-img.PerspectiveCenter</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>cube[:,:3]</expression-string>
+        <expression-string>norm(abs(realRotationMatrix)-abs(img.RotationMatrix))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -774,9 +814,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/MatrixMethods.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="69" selection-start-line="69" selection-end-line="69" />
+          <folding>
+            <element signature="e#0#125#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lab3_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1513">
+        <state relative-caret-position="1407">
           <caret line="96" column="12" selection-start-line="96" selection-start-column="12" selection-end-line="96" selection-end-column="12" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
@@ -786,73 +836,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lab1_main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="26" selection-start-line="26" selection-end-line="26" selection-end-column="24" />
+        <state relative-caret-position="-1860">
+          <caret line="279" column="50" lean-forward="true" selection-start-line="279" selection-start-column="50" selection-end-line="279" selection-end-column="50" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lab2_main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="39" selection-start-line="39" selection-end-line="42" selection-end-column="112" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MatrixMethods.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8109">
-          <caret line="477" selection-start-line="477" selection-end-line="477" />
-          <folding>
-            <element signature="e#0#119#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ObjectsSynthetic.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="35" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SingleImage.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="125" lean-forward="true" selection-start-line="125" selection-end-line="125" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-            <element signature="e#4032#4168#0" />
-            <element signature="e#4701#4760#0" />
-            <element signature="e#4822#8260#0" />
-            <element signature="e#8312#9394#0" />
-            <element signature="e#9450#10263#0" />
-            <element signature="e#10316#11878#0" />
-            <element signature="e#11930#13638#0" />
-            <element signature="e#13726#16414#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DLT.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="4" lean-forward="true" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="77" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Camera.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="533" column="62" selection-start-line="533" selection-start-column="62" selection-end-line="533" selection-end-column="62" />
+        <state relative-caret-position="1076">
+          <caret line="140" column="8" selection-start-line="140" selection-start-column="8" selection-end-line="140" selection-end-column="8" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
             <element signature="e#1305#1445#0" />
@@ -866,6 +861,49 @@
             <element signature="e#8959#11099#0" />
             <element signature="e#11193#16331#0" />
             <element signature="e#16427#18320#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lab2_main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1326">
+          <caret line="27" selection-start-line="27" selection-end-line="27" selection-end-column="57" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ObjectsSynthetic.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="35" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SingleImage.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="488" column="18" selection-start-line="488" selection-start-column="12" selection-end-line="488" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#937#1328#0" />
+            <element signature="e#1436#2006#0" />
+            <element signature="e#4218#4371#0" />
+            <element signature="e#4428#4624#0" />
+            <element signature="e#4701#4760#0" />
+            <element signature="e#10316#11878#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DLT.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="211">
+          <caret line="93" column="30" lean-forward="true" selection-start-line="93" selection-start-column="30" selection-end-line="93" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>

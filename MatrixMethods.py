@@ -1,8 +1,9 @@
-from numpy import cos, sin, array, dot, atleast_2d, abs, trunc, any, finfo, get_printoptions, set_printoptions, ndarray
+from numpy import cos, sin, array, dot, atleast_2d, abs, trunc, any, finfo, get_printoptions, set_printoptions, ndarray, sign
 import numpy.core.arrayprint as arrayprint
 from json import dumps, dump, load, loads
 import contextlib
 import math
+import  numpy as np
 
 def Compute3DRotationMatrix_RzRyRz(azimuth, phi, kappa):
     """
@@ -475,6 +476,16 @@ def euler_angles_from_rotation_matrix(R):
         psi = math.atan2(R[2, 1] / cos_theta, R[2, 2] / cos_theta)
         phi = math.atan2(R[1, 0] / cos_theta, R[0, 0] / cos_theta)
     return psi, theta, phi
+
+def findSignMat(calibrationMatrix):
+    signMat = np.eye(3)
+    if calibrationMatrix[0,0] > 0:
+        signMat[0,0] = signMat[0,0]*-1
+    if calibrationMatrix[1,1] > 0:
+        signMat[1,1] = signMat[1,1]*-1
+    if calibrationMatrix[2,2] < 0:
+        signMat[2,2] = signMat[2,2]*-1
+    return signMat
 
 if __name__ == "__main__":
     from numpy import pi
