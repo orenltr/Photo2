@@ -4,6 +4,8 @@ from MatrixMethods import *
 # import PhotoViewer as pv
 # import SingleImage
 import matplotlib as plt
+import cv2
+from glob import glob
 
 
 class Camera(object):
@@ -143,6 +145,50 @@ class Camera(object):
         return np.array([[-self.focalLength, 0, self.principalPoint[0]],
                          [0,-self.focalLength,self.principalPoint[1]],
                          [0,0,1]])
+
+    @property
+    def K(self):
+        f = self.focalLength
+        xp = self.principalPoint[0]
+        yp = self.principalPoint[1]
+        K = np.array([[-f, 0, xp], [0, -f, yp], [0, 0, 1]])
+        self.__k = K
+        return self.__k
+
+    def aoutomatic_calibration(self, path):
+        # termination criteria
+        criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
+        # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
+        objp = np.zeros((7 * 9, 3), np.float32)
+        objp[:, :2] = np.mgrid[0:9, 0:7].T.reshape(-1, 2)
+        # Arrays to store object points and image points from all the images.
+        objpoints = []  # 3d point in real world space
+        imgpoints = []  # 2d points in image plane.
+        images = glob(path + '\*.jpg')
+        for fname in images:
+            img = cv2.imread(fname)
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            # Find the chess board corners
+            ret, corners = cv2.findChessboardCorners(gray, (9, 7), None)
+            # If found, add object points, image points (after refining them)
+            if ret == True:
+                objpoints.append(objp)
+                corners2 = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
+                imgpoints.append(corners)
+                # # Draw and display the corners
+                # cv.drawChessboardCorners(img, (7, 9), corners2, ret)
+                # cv.imshow('img', img)
+                # cv.waitKey(500)
+        # get calibration params
+        gray = cv2.cvtColor(cv2.imread(images[0]), cv2.COLOR_BGR2GRAY)
+        ret, K, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
+        # cv.destroyAllWindows()
+        K[0, 0] = -K[0, 0]
+        K[1, 1] = -K[1, 1]
+        self.focalLength = -K[0, 0]
+        self.principalPoint[0] = K[0, 2]
+        self.principalPoint[1] = K[1, 2]
+        return K
 
 
     def CameraToIdealCamera(self, camera_points):

@@ -5,7 +5,7 @@ from MatrixMethods import *
 import PhotoViewer as pv
 import matplotlib as plt
 from scipy.linalg import rq,inv
-from scipy.spatial.transform import Rotation as R
+# from scipy.spatial.transform import Rotation as R
 
 class SingleImage(object):
 
